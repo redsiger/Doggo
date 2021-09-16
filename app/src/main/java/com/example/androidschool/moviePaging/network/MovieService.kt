@@ -1,5 +1,7 @@
 package com.example.androidschool.moviePaging.network
 
+import com.example.androidschool.moviePaging.model.Movie
+import com.example.androidschool.moviePaging.model.MovieById
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -7,6 +9,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 const val BASE_URL = "https://api.themoviedb.org/3/"
@@ -23,6 +26,9 @@ interface MovieService {
 
     @GET("search/movie")
     suspend fun getSearchResult(@Query("query") searchQuery: String, @Query("page") page: Int) : Response<MovieSearchResponse>
+
+    @GET("movie/{id}")
+    suspend fun getMovieById(@Path ("id") id: String) : Response<MovieById>
 
     companion object {
         operator fun invoke() : MovieService {

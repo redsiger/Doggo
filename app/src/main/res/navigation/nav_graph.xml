@@ -11,11 +11,37 @@
         tools:layout="@layout/fragment_test" >
         <action
             android:id="@+id/action_testFragment_to_popularMoviesFragment"
-            app:destination="@id/popularMoviesFragment" />
+            app:destination="@id/popularMoviesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/popularMoviesFragment"
         android:name="com.example.androidschool.moviePaging.ui.popularMovies.PopularMoviesFragment"
         android:label="fragment_popular_movies"
-        tools:layout="@layout/fragment_popular_movies" />
+        tools:layout="@layout/fragment_popular_movies" >
+        <action
+            android:id="@+id/action_popularMoviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <argument
+            android:name="MovieId"
+            android:defaultValue="550" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.example.androidschool.moviePaging.ui.popularMovies.MovieDetailsFragment"
+        android:label="fragment_movie_details"
+        tools:layout="@layout/fragment_movie_details" >
+        <argument
+            android:name="movieId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="500" />
+    </fragment>
 </navigation>

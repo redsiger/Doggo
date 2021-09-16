@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,9 +20,11 @@ class PopularMoviesFragment : Fragment() {
 
     private var _binding: FragmentPopularMoviesBinding? = null
     private val mBinding get() = _binding!!
-    lateinit var mViewModel: PopularMoviesViewModel
+    private val mViewModel: PopularMoviesViewModel by viewModels()
     lateinit var mAdapter: MovieSearchResponseAdapter
     lateinit var mRecyclerView: RecyclerView
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +32,7 @@ class PopularMoviesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentPopularMoviesBinding.inflate(inflater, container,false)
-        mViewModel = ViewModelProvider(this).get(PopularMoviesViewModel::class.java)
+//        mViewModel = ViewModelProvider(this).get(PopularMoviesViewModel::class.java)
 
 
         initialize()
@@ -37,6 +40,10 @@ class PopularMoviesFragment : Fragment() {
         return (mBinding.root)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     private fun initialize() {
         mRecyclerView = mBinding.recyclerMovieList

@@ -1,8 +1,12 @@
 package com.example.androidschool.moviePaging.ui
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +15,9 @@ import com.example.androidschool.moviePaging.databinding.FragmentMovieRecyclerIt
 import com.example.androidschool.moviePaging.databinding.FragmentPopularMoviesBinding
 import com.example.androidschool.moviePaging.model.Movie
 import com.example.androidschool.moviePaging.network.TMBD_IMG_URL
+import com.example.androidschool.moviePaging.ui.popularMovies.MovieDetailsFragment
+import com.example.androidschool.moviePaging.ui.popularMovies.PopularMoviesFragmentDirections
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 class MovieSearchResponseAdapter : PagingDataAdapter<Movie, MovieSearchResponseAdapter.MovieViewHolder>(
@@ -34,11 +41,42 @@ class MovieSearchResponseAdapter : PagingDataAdapter<Movie, MovieSearchResponseA
                 itemMovieImg.setImageResource(R.drawable.ic_loading_failed)
             }
 
+            val extras = FragmentNavigatorExtras(
+                mBinding.itemMovieImg to "movie_img"
+            )
+
         }
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(movie = it) }
+
+        val movie = getItem(position)
+
+        holder.itemView.setOnClickListener {
+            val bundle: Bundle = Bundle()
+            val id = movie?.id.toString()
+            bundle.putString("MovieId", id)
+
+            val movieId: String = movie?.id.toString()
+            val action = PopularMoviesFragmentDirections.actionPopularMoviesFragmentToMovieDetailsFragment().setMovieId(movieId)
+
+            val extras = FragmentNavigatorExtras(
+                holder.mBinding.itemMovieImg to "movie_img"
+            )
+
+            val anims = NavOptions.Builder()
+                .setEnterAnim(R.anim.slide_in_right)
+                .setExitAnim(R.anim.slide_out_left)
+                .setPopExitAnim(R.anim.slide_out_right)
+                .setPopEnterAnim(R.anim.slide_in_left)
+                .build()
+
+
+            Navigation.findNavController(it).navigate(R.id.movieDetailsFragment, bundle, anims)
+
+            Snackbar.make(it, "$position", Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {

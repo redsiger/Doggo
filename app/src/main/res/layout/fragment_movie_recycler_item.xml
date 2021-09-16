@@ -25,6 +25,7 @@
 
             <ImageView
                 android:id="@+id/item_movie_img"
+                android:transitionName="movie_img"
                 tools:src="@drawable/ic_launcher_foreground"
                 tools:scaleType="centerCrop"
                 tools:background="@color/black"
