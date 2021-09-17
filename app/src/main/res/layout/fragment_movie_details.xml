@@ -10,6 +10,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ProgressBar
+            android:id="@+id/progress_bar_fragment_movie_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/app_margin"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
 
         <ImageView
             android:id="@+id/movie_detail_fragment_background_img"
@@ -30,9 +40,9 @@
             android:id="@+id/movie_detail_fragment_movie_img_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/app_margin"
-            android:layout_marginEnd="@dimen/app_margin"
-            android:padding="5dp"
+            android:layout_marginStart="@dimen/movie_img_margin"
+            android:layout_marginEnd="@dimen/movie_img_margin"
+            android:padding="@dimen/movie_img_detail_padding"
             app:cardElevation="@dimen/card_elevation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/movie_detail_fragment_movie_img_space">
@@ -56,7 +66,7 @@
         <TextView
             android:id="@+id/movie_detail_fragment_title"
             style="@style/style_movie_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/app_margin"
             android:layout_marginEnd="@dimen/app_margin"
@@ -81,14 +91,12 @@
             tools:text="some desc"
             android:layout_marginTop="@dimen/app_margin"
             android:layout_marginEnd="@dimen/app_margin"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_release_date"
             app:layout_constraintStart_toStartOf="@id/movie_detail_fragment_movie_img_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"/>
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

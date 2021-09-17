@@ -2,11 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:icon="@drawable/ic_popular_movies"
         android:id="@+id/popularMoviesFragment"
-        android:title="popular"/>
+        android:title="@string/popular_movies_title"/>
 
     <item
+        android:icon="@drawable/ic_search_movies"
         android:id="@+id/testFragment"
-        android:title="test"/>
+        android:title="@string/search_movies_title"/>
 
 </menu>

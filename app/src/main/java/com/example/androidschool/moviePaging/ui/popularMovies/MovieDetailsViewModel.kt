@@ -14,6 +14,7 @@ class MovieDetailsViewModel(
 ): ViewModel() {
 
     var movieById = MutableLiveData<MovieById>()
+    var isMoviesLoaded = MutableLiveData<Boolean>(false)
     lateinit var apiService: MovieService
 
     init {
@@ -27,6 +28,7 @@ class MovieDetailsViewModel(
             if (response.isSuccessful) {
                 val movieByIdResponse = response.body() as MovieById
                 movieById.postValue(movieByIdResponse)
+                isMoviesLoaded.postValue(true)
             }
         }
     }

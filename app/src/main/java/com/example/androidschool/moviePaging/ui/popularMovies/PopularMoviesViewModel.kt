@@ -17,10 +17,12 @@ class PopularMoviesViewModel(
     private val repository = MovieRepository()
 
     private val _popularMovies = MutableLiveData<PagingData<Movie>>()
+    var isMoviesLoaded = MutableLiveData<Boolean>(false)
 
     suspend fun getPopularMovies(): LiveData<PagingData<Movie>> {
         val response = repository.getPopularMovies().cachedIn(viewModelScope)
         _popularMovies.value = response.value
+        isMoviesLoaded.value = true
         return response
     }
 

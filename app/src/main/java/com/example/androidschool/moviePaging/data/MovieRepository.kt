@@ -21,6 +21,16 @@ class MovieRepository(
         }
     }
 
+//    fun getPopularMovies(query: String = "1"): Flow<PagingData<Movie>> {
+//        return Pager(
+//            config = PagingConfig(
+//                pageSize = DEFAULT_PAGE_SIZE,
+//                enablePlaceholders = false
+//            ),
+//            pagingSourceFactory = { MoviePagingSource(movieService, query) }
+//        ).flow
+//    }
+
     fun getPopularMovies(query: String = "1"): LiveData<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(

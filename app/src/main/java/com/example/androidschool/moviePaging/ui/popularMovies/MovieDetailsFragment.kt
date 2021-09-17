@@ -19,18 +19,20 @@ class MovieDetailsFragment: Fragment() {
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val mBinding get() = _binding!!
-    private val args : MovieDetailsFragmentArgs by navArgs()
-    private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(args.movieId!!)
-    }
-    //    private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(
-//        requireArguments()
-//            .getString("MovieId")!!)
+//    private val args : MovieDetailsFragmentArgs by navArgs()
+//    private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(args.movieId!!)
 //    }
+        private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(
+        requireArguments()
+            .getString("MovieId")!!)
+    }
     lateinit var mMovieByIdObserver: Observer<MovieById>
+    lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+//        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
     }
 
     override fun onCreateView(
@@ -48,7 +50,7 @@ class MovieDetailsFragment: Fragment() {
                 if (movie.posterPath != null) {
                     Picasso.get()
                         .load(TMBD_IMG_URL + movie.posterPath)
-//                    .placeholder(R.drawable.movie_img_loading_anim)
+//                        .placeholder()
                         .resizeDimen(R.dimen.item_movie_img_width, R.dimen.item_movie_img_height)
                         .into(movieDetailFragmentMovieImg)
                 } else {
@@ -64,6 +66,16 @@ class MovieDetailsFragment: Fragment() {
                 }
             }
         }
+
+        mIsMoviesLoadedObserver = Observer { isLoaded ->
+            when (isLoaded) {
+                true -> mBinding.progressBarFragmentMovieDetails.visibility = View.GONE
+                false -> mBinding.progressBarFragmentMovieDetails.visibility = View.VISIBLE
+            }
+        }
+
+        mViewModel.isMoviesLoaded.observe(viewLifecycleOwner, mIsMoviesLoadedObserver)
+
         mViewModel.movieById.observe(viewLifecycleOwner, mMovieByIdObserver)
 
         return mBinding.root

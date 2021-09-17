@@ -52,30 +52,29 @@ class MovieSearchResponseAdapter : PagingDataAdapter<Movie, MovieSearchResponseA
         getItem(position)?.let { holder.bind(movie = it) }
 
         val movie = getItem(position)
+        val bundle: Bundle = Bundle()
+        val id = movie?.id.toString()
+        bundle.putString("MovieId", id)
+
+        val anims = NavOptions.Builder()
+            .setEnterAnim(R.anim.slide_in_right)
+            .setExitAnim(R.anim.slide_out_left)
+            .setPopExitAnim(R.anim.slide_out_right)
+            .setPopEnterAnim(R.anim.slide_in_left)
+            .build()
 
         holder.itemView.setOnClickListener {
-            val bundle: Bundle = Bundle()
-            val id = movie?.id.toString()
-            bundle.putString("MovieId", id)
 
-            val movieId: String = movie?.id.toString()
-            val action = PopularMoviesFragmentDirections.actionPopularMoviesFragmentToMovieDetailsFragment().setMovieId(movieId)
-
-            val extras = FragmentNavigatorExtras(
-                holder.mBinding.itemMovieImg to "movie_img"
-            )
-
-            val anims = NavOptions.Builder()
-                .setEnterAnim(R.anim.slide_in_right)
-                .setExitAnim(R.anim.slide_out_left)
-                .setPopExitAnim(R.anim.slide_out_right)
-                .setPopEnterAnim(R.anim.slide_in_left)
-                .build()
-
+//            val movieId: String = movie?.id.toString()
+//            val action = PopularMoviesFragmentDirections.actionPopularMoviesFragmentToMovieDetailsFragment().setMovieId(movieId)
+//
+//            val extras = FragmentNavigatorExtras(
+//                holder.mBinding.itemMovieImg to "movie_img"
+//            )
 
             Navigation.findNavController(it).navigate(R.id.movieDetailsFragment, bundle, anims)
 
-            Snackbar.make(it, "$position", Snackbar.LENGTH_SHORT).show()
+//            Snackbar.make(it, "$position", Snackbar.LENGTH_SHORT).show()
         }
     }
 
