@@ -10,9 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.androidschool.moviePaging.R
+import com.example.androidschool.moviePaging.data.utils.TMBD_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailsBinding
 import com.example.androidschool.moviePaging.model.MovieById
-import com.example.androidschool.moviePaging.network.TMBD_IMG_URL
 import com.squareup.picasso.Picasso
 
 class MovieDetailsFragment: Fragment() {

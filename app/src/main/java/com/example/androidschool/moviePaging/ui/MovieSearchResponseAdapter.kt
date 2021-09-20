@@ -11,10 +11,10 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidschool.moviePaging.R
+import com.example.androidschool.moviePaging.data.utils.TMBD_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieRecyclerItemBinding
 import com.example.androidschool.moviePaging.databinding.FragmentPopularMoviesBinding
 import com.example.androidschool.moviePaging.model.Movie
-import com.example.androidschool.moviePaging.network.TMBD_IMG_URL
 import com.example.androidschool.moviePaging.ui.popularMovies.MovieDetailsFragment
 import com.example.androidschool.moviePaging.ui.popularMovies.PopularMoviesFragmentDirections
 import com.google.android.material.snackbar.Snackbar

@@ -1,5 +1,7 @@
 package com.example.androidschool.moviePaging.network
 
+import com.example.androidschool.moviePaging.data.utils.API_KEY
+import com.example.androidschool.moviePaging.data.utils.BASE_URL
 import com.example.androidschool.moviePaging.model.Movie
 import com.example.androidschool.moviePaging.model.MovieById
 import okhttp3.Interceptor
@@ -12,9 +14,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-const val BASE_URL = "https://api.themoviedb.org/3/"
-const val API_KEY = "bfe801649ca860d496a1b7a533405418"
-const val TMBD_IMG_URL = "https://image.tmdb.org/t/p/original"
+
 const val DEFAULT_PAGE_INDEX = 1
 const val DEFAULT_PAGE_SIZE = 20
 
@@ -30,38 +30,38 @@ interface MovieService {
     @GET("movie/{id}")
     suspend fun getMovieById(@Path ("id") id: String) : Response<MovieById>
 
-    companion object {
-        operator fun invoke() : MovieService {
-
-            val httpLoggingInterceptor = HttpLoggingInterceptor()
-            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
-            val addApiKeyInterceptor = Interceptor {
-                val url = it.request()
-                    .url
-                    .newBuilder()
-                    .addQueryParameter("api_key", API_KEY)
-                    .build()
-                val reqest = it.request()
-                    .newBuilder()
-                    .url(url)
-                    .build()
-                return@Interceptor it.proceed(reqest)
-            }
-
-            val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(addApiKeyInterceptor)
-                .addInterceptor(httpLoggingInterceptor)
-                .build()
-
-            val retrofit = Retrofit.Builder()
-                .client(okHttpClient)
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(MovieService::class.java)
-
-            return retrofit
-        }
-    }
+//    companion object {
+//        operator fun invoke() : MovieService {
+//
+//            val httpLoggingInterceptor = HttpLoggingInterceptor()
+//            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+//
+//            val addApiKeyInterceptor = Interceptor {
+//                val url = it.request()
+//                    .url
+//                    .newBuilder()
+//                    .addQueryParameter("api_key", API_KEY)
+//                    .build()
+//                val request = it.request()
+//                    .newBuilder()
+//                    .url(url)
+//                    .build()
+//                return@Interceptor it.proceed(request)
+//            }
+//
+//            val okHttpClient = OkHttpClient.Builder()
+//                .addInterceptor(addApiKeyInterceptor)
+//                .addInterceptor(httpLoggingInterceptor)
+//                .build()
+//
+//            val retrofit = Retrofit.Builder()
+//                .client(okHttpClient)
+//                .baseUrl(BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//                .create(MovieService::class.java)
+//
+//            return retrofit
+//        }
+//    }
 }
