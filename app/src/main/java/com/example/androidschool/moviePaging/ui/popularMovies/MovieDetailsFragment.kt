@@ -1,10 +1,14 @@
 package com.example.androidschool.moviePaging.ui.popularMovies
 
+import android.app.Notification
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,7 +17,13 @@ import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.data.utils.TMBD_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailsBinding
 import com.example.androidschool.moviePaging.model.MovieById
+import com.example.androidschool.moviePaging.notifications.AppNotification
+import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
+import com.example.androidschool.moviePaging.notifications.TimePickerFragment
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.squareup.picasso.Picasso
+import java.util.*
 
 class MovieDetailsFragment: Fragment() {
 
@@ -22,17 +32,36 @@ class MovieDetailsFragment: Fragment() {
 //    private val args : MovieDetailsFragmentArgs by navArgs()
 //    private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(args.movieId!!)
 //    }
-        private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(
+    private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(
         requireArguments()
             .getString("MovieId")!!)
     }
     lateinit var mMovieByIdObserver: Observer<MovieById>
     lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
+    lateinit var mMovieById: MovieById
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
 
+    }
+
+    private fun showTimePicker() {
+        // create a new instance of TimePicker
+        val timePickerFragment = TimePickerFragment()
+        val supportFragmentManager = requireActivity().supportFragmentManager
+
+        supportFragmentManager.setFragmentResultListener(
+            "PICKED_DATE",
+            viewLifecycleOwner
+        ) {
+            resultKey, bundle -> if (resultKey == "REQUEST_KEY") {
+                val pickedHour = bundle.getString("SELECTED_DATE")
+                AppNotification().createNotification(requireActivity(), CHANNEL_1_ID, mMovieById.title, pickedHour!!, 1)
+            }
+        }
+
+        timePickerFragment.show(supportFragmentManager, "TimePickerFragment")
     }
 
     override fun onCreateView(
@@ -41,7 +70,26 @@ class MovieDetailsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+
+        val showTimePickerDialogListener = View.OnClickListener {
+            showTimePicker()
+        }
+
+        val createNotificationClickListener = View.OnClickListener {
+            AppNotification().createNotification(
+                this.requireContext(),
+                CHANNEL_1_ID,
+                mMovieById.title,
+                mMovieById.overview,
+                1
+            )
+            Log.e("notification", "Click")
+        }
+        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(createNotificationClickListener)
+//        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(showTimePickerDialogListener)
+
         mMovieByIdObserver = Observer { movie ->
+            mMovieById = movie
             with(mBinding) {
                 movieDetailFragmentTitle.text = movie.originalTitle
                 movieDetailFragmentReleaseDate.text = movie.releaseDate
@@ -80,6 +128,7 @@ class MovieDetailsFragment: Fragment() {
 
         return mBinding.root
     }
+
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //        super.onViewCreated(view, savedInstanceState)

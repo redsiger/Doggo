@@ -54,7 +54,9 @@ class MovieSearchResponseAdapter : PagingDataAdapter<Movie, MovieSearchResponseA
         val movie = getItem(position)
         val bundle: Bundle = Bundle()
         val id = movie?.id.toString()
+        val movieTitle = movie?.title
         bundle.putString("MovieId", id)
+        bundle.putString("MovieTitle", movieTitle)
 
         val anims = NavOptions.Builder()
             .setEnterAnim(R.anim.slide_in_right)

@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">Doggo</string>
+    <string name="app_name">The Brand New MovieDB</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="failed_to_load_movies">Failed to load movies</string>
     <string name="try_again">Try again</string>
     <string name="popular_movies_title">Popular</string>
     <string name="search_movies_title">Search</string>
+    <string name="search_hint">Find movies</string>
 </resources>

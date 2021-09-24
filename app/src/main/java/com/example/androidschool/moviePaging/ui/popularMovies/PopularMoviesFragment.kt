@@ -3,16 +3,17 @@ package com.example.androidschool.moviePaging.ui.popularMovies
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.databinding.FragmentPopularMoviesBinding
 import com.example.androidschool.moviePaging.ui.MovieSearchResponseAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -28,6 +29,7 @@ class PopularMoviesFragment : Fragment() {
     lateinit var mAdapter: MovieSearchResponseAdapter
     lateinit var mRecyclerView: RecyclerView
     lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
+    lateinit var thisView: Fragment
 
 
     override fun onCreateView(
@@ -41,6 +43,8 @@ class PopularMoviesFragment : Fragment() {
         initialize()
         initPopularMoviesList()
 
+        thisView = this
+
         Log.e("Tag", "onCreateView")
         return (mBinding.root)
     }
@@ -50,9 +54,25 @@ class PopularMoviesFragment : Fragment() {
         Log.e("Tag", "onCreate")
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu, menu)
+        val menuItem = menu.findItem(R.menu.main_menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.app_bar_search -> {
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun initialize() {
         mRecyclerView = mBinding.recyclerMovieList
         mAdapter = MovieSearchResponseAdapter()
+
+        setHasOptionsMenu(true)
 
         mRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -81,7 +101,7 @@ class PopularMoviesFragment : Fragment() {
 
     private fun initPopularMoviesList() {
         viewLifecycleOwner.lifecycleScope.launch {
-            delay(2000)
+//            delay(2000)
             mViewModel.getPopularMovies().observe(viewLifecycleOwner, {
                 mAdapter.submitData(lifecycle, it)
             })

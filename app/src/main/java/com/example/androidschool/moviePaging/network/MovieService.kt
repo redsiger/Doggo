@@ -25,7 +25,10 @@ interface MovieService {
     suspend fun getPopularMovies(@Query("page") page: Int) : Response<MovieSearchResponse>
 
     @GET("search/movie")
-    suspend fun getSearchResult(@Query("query") searchQuery: String, @Query("page") page: Int) : Response<MovieSearchResponse>
+    suspend fun getSearchResult(
+        @Query("query") searchQuery: String,
+        @Query("page") page: Int
+    ) : Response<MovieSearchResponse>
 
     @GET("movie/{id}")
     suspend fun getMovieById(@Path ("id") id: String) : Response<MovieById>

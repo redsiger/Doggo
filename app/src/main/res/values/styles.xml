@@ -2,7 +2,7 @@
 <resources>
 
     <style name="style_movie_title">
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textSize">@dimen/app_large_text</item>
         <item name="android:textStyle">bold</item>
     </style>
