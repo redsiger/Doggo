@@ -1,18 +1,13 @@
 package com.example.androidschool.moviePaging.ui.popularMovies
 
-import android.app.Notification
 import android.os.Bundle
-import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.lifecycleScope
 import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.data.utils.TMBD_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailsBinding
@@ -20,10 +15,9 @@ import com.example.androidschool.moviePaging.model.MovieById
 import com.example.androidschool.moviePaging.notifications.AppNotification
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
 import com.example.androidschool.moviePaging.notifications.TimePickerFragment
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.squareup.picasso.Picasso
-import java.util.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MovieDetailsFragment: Fragment() {
 
@@ -39,11 +33,11 @@ class MovieDetailsFragment: Fragment() {
     lateinit var mMovieByIdObserver: Observer<MovieById>
     lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
     lateinit var mMovieById: MovieById
+    lateinit var mAppNotification: AppNotification
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-
+        mAppNotification = AppNotification(requireContext())
     }
 
     private fun showTimePicker() {
@@ -57,7 +51,7 @@ class MovieDetailsFragment: Fragment() {
         ) {
             resultKey, bundle -> if (resultKey == "REQUEST_KEY") {
                 val pickedHour = bundle.getString("SELECTED_DATE")
-                AppNotification().createNotification(requireActivity(), CHANNEL_1_ID, mMovieById.title, pickedHour!!, 1)
+                mAppNotification.pushNotification(requireActivity(), CHANNEL_1_ID, mMovieById.title, pickedHour!!, 1)
             }
         }
 
@@ -76,16 +70,30 @@ class MovieDetailsFragment: Fragment() {
         }
 
         val createNotificationClickListener = View.OnClickListener {
-            AppNotification().createNotification(
-                this.requireContext(),
+            val context = requireContext()
+            mAppNotification.pushNotification(
+                context,
                 CHANNEL_1_ID,
                 mMovieById.title,
                 mMovieById.overview,
                 1
             )
-            Log.e("notification", "Click")
+//            lifecycleScope.launch {
+//                delay(3000)
+//                notificator.deleteNotification(context, 1)
+//            }
         }
-        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(createNotificationClickListener)
+
+        val deleteNotificationClickListener = View.OnClickListener {
+            val context = requireContext()
+            mAppNotification.deleteNotification(context,1)
+        }
+
+        mBinding.apply {
+            movieDetailFragmentBackgroundImg.setOnClickListener(createNotificationClickListener)
+            movieDetailFragmentMovieImg.setOnClickListener(deleteNotificationClickListener)
+        }
+//        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(createNotificationClickListener)
 //        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(showTimePickerDialogListener)
 
         mMovieByIdObserver = Observer { movie ->
