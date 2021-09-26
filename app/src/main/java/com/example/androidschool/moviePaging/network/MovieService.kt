@@ -22,7 +22,7 @@ interface MovieService {
 
     //    https://api.themoviedb.org/3/movie/popular?api_key=bfe801649ca860d496a1b7a533405418
     @GET("movie/popular")
-    suspend fun getPopularMovies(@Query("page") page: Int) : Response<MovieSearchResponse>
+    suspend fun getPopularMovies(@Query("page") page: Int = 1) : Response<MovieSearchResponse>
 
     @GET("search/movie")
     suspend fun getSearchResult(

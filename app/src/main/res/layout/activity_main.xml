@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/surfaceDay">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/toolbar"
@@ -21,11 +22,9 @@
             app:subtitleTextColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/design_default_color_primary"/>
+            android:background="?attr/colorPrimary"/>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-
 
     <fragment
         android:id="@+id/nav_host_fragment"

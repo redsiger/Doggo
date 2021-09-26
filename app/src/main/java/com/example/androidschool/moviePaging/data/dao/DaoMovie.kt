@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class DaoMovie(
     val searchResponsePage: Int,
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     val movieId: Int,
     val adult: Boolean,
     val backdropPath: String,

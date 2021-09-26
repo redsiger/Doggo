@@ -27,7 +27,7 @@ class PopularMoviesViewModel(
     var isMoviesLoaded = MutableLiveData<Boolean>(false)
 
     suspend fun getPopularMovies(): LiveData<PagingData<Movie>> {
-        val response = repository.getPopularMovies().cachedIn(viewModelScope)
+        val response = repository.getPopularMoviesPaging().cachedIn(viewModelScope)
         _popularMovies.value = response.value
         isMoviesLoaded.value = true
         return response
@@ -39,7 +39,7 @@ class PopularMoviesViewModel(
 //    }
 
     fun searchResult(query: String): Flow<PagingData<Movie>> {
-        return repository.getSearchResult(query)
+        return repository.getSearchResultPaging(query)
             .cachedIn(viewModelScope)
     }
 

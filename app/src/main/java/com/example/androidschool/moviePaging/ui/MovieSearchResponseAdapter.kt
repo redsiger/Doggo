@@ -40,11 +40,6 @@ class MovieSearchResponseAdapter : PagingDataAdapter<Movie, MovieSearchResponseA
             } else {
                 itemMovieImg.setImageResource(R.drawable.ic_loading_failed)
             }
-
-            val extras = FragmentNavigatorExtras(
-                mBinding.itemMovieImg to "movie_img"
-            )
-
         }
     }
 

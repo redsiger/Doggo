@@ -4,7 +4,6 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Relation
 
-@Entity(tableName = "MovieSearchResponsesWithMovies")
 data class DaoMovieSearchResponseWithMovies(
 
     @Embedded

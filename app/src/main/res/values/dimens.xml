@@ -3,9 +3,12 @@
     <dimen name="card_elevation">10dp</dimen>
     <dimen name="card_corner_radius">10dp</dimen>
     <dimen name="app_margin">8dp</dimen>
+    <dimen name="app_padding">8dp</dimen>
     <dimen name="movie_img_margin">16dp</dimen>
-    <dimen name="app_large_text">20sp</dimen>
+    <dimen name="app_title_text">20sp</dimen>
+    <dimen name="app_large_text">18sp</dimen>
     <dimen name="app_normal_text">16sp</dimen>
+    <dimen name="app_small_text">12sp</dimen>
     <dimen name="title_bottom_margin">4dp</dimen>
     <dimen name="item_movie_img_width">90dp</dimen>
     <dimen name="item_movie_img_height">135dp</dimen>

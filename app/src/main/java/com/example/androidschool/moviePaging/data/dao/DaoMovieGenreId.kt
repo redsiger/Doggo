@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "GenreIds")
 data class DaoMovieGenreId(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     val genreId: Int
 )

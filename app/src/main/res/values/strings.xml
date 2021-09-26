@@ -7,4 +7,5 @@
     <string name="popular_movies_title">Popular</string>
     <string name="search_movies_title">Search</string>
     <string name="search_hint">Find movies</string>
+    <string name="section_more">more</string>
 </resources>
