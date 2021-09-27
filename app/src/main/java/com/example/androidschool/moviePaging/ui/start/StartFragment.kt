@@ -5,13 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidschool.moviePaging.R
+import com.example.androidschool.moviePaging.data.dao.DaoMovie
+import com.example.androidschool.moviePaging.data.dao.DaoMovieSearchResponse
+import com.example.androidschool.moviePaging.data.dao.database.MovieSearchResponseDatabase
 import com.example.androidschool.moviePaging.databinding.FragmentStartBinding
 import com.example.androidschool.moviePaging.model.Movie
+import com.example.androidschool.moviePaging.network.MovieSearchResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class StartFragment : Fragment() {
@@ -28,8 +37,60 @@ class StartFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentStartBinding.inflate(inflater, container,false)
-
         initialization()
+
+        val movie = Movie(
+        adult = false,
+        backdropPath = "some",
+        genreIds = listOf(0, 1, 3),
+        id = 0,
+        originalLanguage = "lan",
+        originalTitle = "tit",
+        overview = "rew",
+        popularity = 2.5,
+        posterPath = "path",
+        releaseDate = "date",
+        title = "tit",
+        video = false,
+        voteAverage = 2.0,
+        voteCount = 2.0
+        )
+
+        val movieResponse: MovieSearchResponse = mViewModel.movieResponse.value ?: MovieSearchResponse(
+            page = 0,
+            results = listOf(movie),
+            totalPages = 0,
+            totalResults = 0
+        )
+
+        val daoMovieSearchResponse = DaoMovieSearchResponse(
+            page = movieResponse.page,
+            totalResults = movieResponse.totalResults,
+            totalPages = movieResponse.totalPages
+        )
+
+        val daoMovie = DaoMovie(
+            searchResponsePage = daoMovieSearchResponse.page,
+            movieId = movie.id,
+            adult = movie.adult,
+            backdropPath = movie.backdropPath,
+            originalLanguage = movie.originalLanguage,
+            originalTitle = movie.originalTitle,
+            overview = movie.overview,
+            popularity = movie.popularity,
+            posterPath = movie.posterPath,
+            releaseDate = movie.releaseDate,
+            title = movie.title,
+            video = movie.video,
+            voteAverage = movie.voteAverage,
+            voteCount = movie.voteCount
+        )
+
+        val dao = MovieSearchResponseDatabase.getInstance(requireContext()).movieDao
+
+        lifecycleScope.launch(Dispatchers.IO) {
+//            dao.insertMovieSearchResponse()
+        }
 
         return mBinding.root
     }
@@ -38,7 +99,6 @@ class StartFragment : Fragment() {
         mAdapter = StartFragmentPopularsAdapter(requireContext())
         mBinding.startFragmentPopularRecycler.adapter = mAdapter
 
-//        val layoutManager = LinearLayoutManager(requireContext())
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         mBinding.startFragmentPopularRecycler.layoutManager = layoutManager
 

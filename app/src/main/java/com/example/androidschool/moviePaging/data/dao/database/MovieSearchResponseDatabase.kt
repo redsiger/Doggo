@@ -14,6 +14,8 @@ import com.example.androidschool.moviePaging.data.dao.*
     version = 1)
 abstract class MovieSearchResponseDatabase: RoomDatabase() {
 
+    abstract val movieDao: MovieSearchResponseDao
+
     companion object {
         @Volatile
         private var INSTANCE: MovieSearchResponseDatabase? = null

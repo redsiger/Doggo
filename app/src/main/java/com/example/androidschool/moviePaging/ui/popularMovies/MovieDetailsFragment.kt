@@ -7,17 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import com.example.androidschool.moviePaging.R
-import com.example.androidschool.moviePaging.data.utils.TMBD_IMG_URL
+import com.example.androidschool.moviePaging.data.utils.TMDB_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailsBinding
 import com.example.androidschool.moviePaging.model.MovieById
 import com.example.androidschool.moviePaging.notifications.AppNotification
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
 import com.example.androidschool.moviePaging.notifications.TimePickerFragment
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MovieDetailsFragment: Fragment() {
 
@@ -105,7 +102,7 @@ class MovieDetailsFragment: Fragment() {
 
                 if (movie.posterPath != null) {
                     Picasso.get()
-                        .load(TMBD_IMG_URL + movie.posterPath)
+                        .load(TMDB_IMG_URL + movie.posterPath)
 //                        .placeholder()
                         .resizeDimen(R.dimen.item_movie_img_width, R.dimen.item_movie_img_height)
                         .into(movieDetailFragmentMovieImg)
@@ -115,7 +112,7 @@ class MovieDetailsFragment: Fragment() {
 
                 if (movie.backdropPath != null) {
                     Picasso.get()
-                        .load(TMBD_IMG_URL + movie.backdropPath)
+                        .load(TMDB_IMG_URL + movie.backdropPath)
                         .centerCrop()
                         .fit()
                         .into(movieDetailFragmentBackgroundImg)

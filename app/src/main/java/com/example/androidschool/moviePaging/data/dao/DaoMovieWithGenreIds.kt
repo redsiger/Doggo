@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 
-data class DaoMovieWithGenreIds (
+data class  DaoMovieWithGenreIds (
 
     @Embedded
     val movie: DaoMovie,

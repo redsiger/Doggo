@@ -20,6 +20,10 @@
                 android:id="@+id/section_popular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_margin_large"
+                android:paddingTop="@dimen/app_padding_medium"
+                android:paddingBottom="@dimen/app_padding_medium"
+                android:paddingStart="@dimen/app_padding_large"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -28,8 +32,6 @@
                     style="@style/style_section_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/app_margin"
-                    android:padding="@dimen/app_padding"
                     android:text="@string/popular_movies_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -39,6 +41,7 @@
                     style="@style/section_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/app_padding_small"
                     android:drawableEnd="@drawable/ic_section_more"
                     android:gravity="center"
                     android:text="@string/section_more"
@@ -47,8 +50,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/section_popular_title"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/start_fragment_popular_recycler"

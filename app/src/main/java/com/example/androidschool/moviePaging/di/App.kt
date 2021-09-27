@@ -4,9 +4,11 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import com.example.androidschool.moviePaging.data.dao.database.MovieSearchResponseDatabase
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
 
 //const val CHANNEL_1_ID: String = "1"
+lateinit var APPLICATION_CONTEXT: Application
 
 class App: Application() {
 
@@ -17,7 +19,13 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         initializeDagger()
+        initRoom()
         createNotificationChannels()
+    }
+
+    private fun initRoom() {
+        APPLICATION_CONTEXT = this
+//        val roomDao = MovieSearchResponseDatabase.getInstance(this).movieDao
     }
 
     private fun createNotificationChannels() {
@@ -37,4 +45,6 @@ class App: Application() {
         appComponent = DaggerAppComponent.builder()
             .build()
     }
+
+
 }

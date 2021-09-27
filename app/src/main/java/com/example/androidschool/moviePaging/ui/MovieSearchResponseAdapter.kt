@@ -6,18 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidschool.moviePaging.R
-import com.example.androidschool.moviePaging.data.utils.TMBD_IMG_URL
+import com.example.androidschool.moviePaging.data.utils.TMDB_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieRecyclerItemBinding
-import com.example.androidschool.moviePaging.databinding.FragmentPopularMoviesBinding
 import com.example.androidschool.moviePaging.model.Movie
-import com.example.androidschool.moviePaging.ui.popularMovies.MovieDetailsFragment
-import com.example.androidschool.moviePaging.ui.popularMovies.PopularMoviesFragmentDirections
-import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
 class MovieSearchResponseAdapter : PagingDataAdapter<Movie, MovieSearchResponseAdapter.MovieViewHolder>(
@@ -33,7 +28,7 @@ class MovieSearchResponseAdapter : PagingDataAdapter<Movie, MovieSearchResponseA
 
             if (movie.posterPath != null) {
                 Picasso.get()
-                    .load(TMBD_IMG_URL + movie.posterPath)
+                    .load(TMDB_IMG_URL + movie.posterPath)
 //                    .placeholder(R.drawable.movie_img_loading_anim)
                     .resizeDimen(R.dimen.item_movie_img_width, R.dimen.item_movie_img_height)
                     .into(itemMovieImg)

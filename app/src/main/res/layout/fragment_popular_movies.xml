@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             tools:listitem="@layout/fragment_movie_recycler_item"
-            android:padding="@dimen/app_margin"
+            android:padding="@dimen/app_margin_medium"
             android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

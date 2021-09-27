@@ -9,7 +9,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidschool.moviePaging.R
-import com.example.androidschool.moviePaging.data.utils.TMBD_IMG_URL
+import com.example.androidschool.moviePaging.data.utils.TMDB_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentStartRecyclerItemBinding
 import com.example.androidschool.moviePaging.model.Movie
 import com.squareup.picasso.Picasso
@@ -28,7 +28,7 @@ class StartFragmentPopularsAdapter(private val context: Context): RecyclerView.A
 
         fun bind(movie: Movie) {
             with(mBinding) {
-                Picasso.get().load(TMBD_IMG_URL + movie.posterPath).resizeDimen(R.dimen.item_movie_img_width, R.dimen.item_movie_img_height).into(startFragmentPopularsMovieImg)
+                Picasso.get().load(TMDB_IMG_URL + movie.posterPath).resizeDimen(R.dimen.start_fragment_section_movie_width, R.dimen.start_fragment_section_movie_height).into(startFragmentPopularsMovieImg)
             }
 
 
