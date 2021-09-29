@@ -4,8 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.androidschool.moviePaging.di.App
-import com.example.androidschool.moviePaging.model.MovieById
+import com.example.androidschool.moviePaging.network.MovieById
 import com.example.androidschool.moviePaging.network.MovieService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +27,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     private fun getMovieById() {
-        GlobalScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val response = apiService.getMovieById(movieId)
             if (response.isSuccessful) {
                 val movieByIdResponse = response.body() as MovieById
@@ -37,4 +36,15 @@ class MovieDetailsViewModel @Inject constructor(
             }
         }
     }
+
+//    private fun getMoviesCast() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val response = apiService.getMovieById(movieId)
+//            if (response.isSuccessful) {
+//                val movieByIdResponse = response.body() as MovieById
+//                movieById.postValue(movieByIdResponse)
+//                isMoviesLoaded.postValue(true)
+//            }
+//        }
+//    }
 }

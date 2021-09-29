@@ -2,24 +2,32 @@
 <resources>
 
     <style name="style_toolbar_title">
-        <item name="android:fontFamily">sans-serif-black</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">@dimen/app_large_text</item>
-    </style>
-
-    <style name="style_movie_title">
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:textSize">@dimen/app_title_text</item>
+        <item name="android:textSize">@dimen/app_text_large</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="style_movie_desc">
-        <item name="android:fontFamily">sans-serif-light</item>
+    <style name="style_movie_title">
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:textSize">@dimen/app_normal_text</item>
-        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">@dimen/app_text_extraLarge</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="style_movie_detail_subTitle">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/app_text_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="style_plain_text">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/app_text_normal</item>
+    </style>
+
+    <style name="style_tag_text">
+        <item name="android:textColor">@color/tag_color</item>
+        <item name="android:textSize">@dimen/app_text_normal</item>
     </style>
 
     <style name="style_movie_img_cornered">
@@ -28,18 +36,15 @@
     </style>
 
     <style name="style_section_title">
-        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:textSize">@dimen/app_normal_text</item>
+        <item name="android:textSize">@dimen/app_text_normal</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:typeface">monospace</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="section_more">
-        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">?attr/colorSecondaryVariant</item>
-        <item name="android:textSize">@dimen/app_small_text</item>
+        <item name="android:textSize">@dimen/app_text_small</item>
         <item name="android:textAllCaps">true</item>
     </style>
 

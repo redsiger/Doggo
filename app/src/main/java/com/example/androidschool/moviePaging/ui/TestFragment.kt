@@ -7,20 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidschool.moviePaging.databinding.FragmentTestBinding
 import com.example.androidschool.moviePaging.ui.popularMovies.PopularMoviesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TestFragment: Fragment() {
 
     private var _binding: FragmentTestBinding? = null
     private val mBinding get() = _binding!!
-    lateinit var mViewModel: PopularMoviesViewModel
+    private val mViewModel: PopularMoviesViewModel by viewModels()
     lateinit var mAdapter: MovieSearchResponseAdapter
     lateinit var mRecyclerView: RecyclerView
 
@@ -55,7 +58,6 @@ class TestFragment: Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentTestBinding.inflate(inflater, container,false)
-        mViewModel = ViewModelProvider(this).get(PopularMoviesViewModel::class.java)
         initialize()
 
         Log.e("logging", "Fragment view created")

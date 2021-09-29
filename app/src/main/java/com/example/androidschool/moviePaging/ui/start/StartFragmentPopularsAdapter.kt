@@ -51,10 +51,10 @@ class StartFragmentPopularsAdapter(private val context: Context): RecyclerView.A
         bundle.putString("MovieTitle", movieTitle)
 
         val anims = NavOptions.Builder()
-            .setEnterAnim(R.anim.slide_in_right)
-            .setExitAnim(R.anim.slide_out_left)
-            .setPopExitAnim(R.anim.slide_out_right)
-            .setPopEnterAnim(R.anim.slide_in_left)
+            .setEnterAnim(R.anim.slide_in_down)
+            .setExitAnim(R.anim.fade_out)
+            .setPopExitAnim(R.anim.slide_out_down)
+            .setPopEnterAnim(R.anim.fade_in)
             .build()
 
         holder.itemView.setOnClickListener {

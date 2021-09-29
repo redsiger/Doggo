@@ -17,10 +17,12 @@ import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.databinding.FragmentPopularMoviesBinding
 import com.example.androidschool.moviePaging.ui.MovieSearchResponseAdapter
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class PopularMoviesFragment : Fragment() {
 
     private var _binding: FragmentPopularMoviesBinding? = null

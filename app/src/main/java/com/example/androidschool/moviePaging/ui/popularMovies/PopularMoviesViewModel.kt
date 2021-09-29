@@ -15,7 +15,8 @@ private const val LAST_SEARCH_QUERY = "last_search_query"
 
 @HiltViewModel
 class PopularMoviesViewModel @Inject constructor(
-    val repository: MovieRepository
+    val repository: MovieRepository,
+    val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val _popularMovies = MutableLiveData<PagingData<Movie>>()

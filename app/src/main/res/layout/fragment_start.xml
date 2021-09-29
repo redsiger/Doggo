@@ -23,7 +23,8 @@
                 android:layout_marginTop="@dimen/app_margin_large"
                 android:paddingTop="@dimen/app_padding_medium"
                 android:paddingBottom="@dimen/app_padding_medium"
-                android:paddingStart="@dimen/app_padding_large"
+                android:paddingStart="@dimen/app_padding_extraLarge"
+                android:paddingEnd="@dimen/app_padding_medium"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="parent">
 

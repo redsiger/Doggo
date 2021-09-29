@@ -1,15 +1,6 @@
 package com.example.androidschool.moviePaging.network
 
-import com.example.androidschool.moviePaging.data.utils.API_KEY
-import com.example.androidschool.moviePaging.data.utils.BASE_URL
-import com.example.androidschool.moviePaging.model.Movie
-import com.example.androidschool.moviePaging.model.MovieById
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

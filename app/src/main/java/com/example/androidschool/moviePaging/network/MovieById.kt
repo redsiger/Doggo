@@ -1,4 +1,4 @@
-package com.example.androidschool.moviePaging.model
+package com.example.androidschool.moviePaging.network
 
 
 import com.google.gson.annotations.SerializedName
@@ -12,6 +12,8 @@ data class MovieById(
     val belongsToCollection: Any,
     @SerializedName("budget")
     val budget: Int,
+    @SerializedName("genres")
+    val genres: List<Genre>,
     @SerializedName("homepage")
     val homepage: String,
     @SerializedName("id")
@@ -28,6 +30,8 @@ data class MovieById(
     val popularity: Double,
     @SerializedName("poster_path")
     val posterPath: String,
+    @SerializedName("production_countries")
+    val productionCountries: List<ProductionCountry>,
     @SerializedName("release_date")
     val releaseDate: String,
     @SerializedName("revenue")
