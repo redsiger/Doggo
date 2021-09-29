@@ -11,16 +11,11 @@ import com.example.androidschool.moviePaging.network.DEFAULT_PAGE_SIZE
 import com.example.androidschool.moviePaging.network.MovieService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class MovieRepository(
-//    private val movieService: MovieService
-) {
-    @Inject
-    lateinit var movieService: MovieService
+@Singleton
+class MovieRepository @Inject constructor(val movieService: MovieService) {
 
-    init {
-        App.appComponent.inject(this)
-    }
 
 //    companion object {
 //        operator fun invoke(): MovieRepository {
@@ -38,8 +33,12 @@ class MovieRepository(
 //        ).flow
 //    }
 
-    fun getPopularMovies() {
-
+    suspend fun getPopularMovies(): List<Movie>? {
+        val response = movieService.getPopularMovies()
+        if (response.isSuccessful) {
+               return response.body()?.results
+        }
+        return emptyList()
     }
 
     fun getPopularMoviesPaging(query: String = "1"): LiveData<PagingData<Movie>> {

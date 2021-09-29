@@ -16,7 +16,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.androidschool.moviePaging.databinding.ActivityMainBinding
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
 import com.google.android.material.appbar.MaterialToolbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var mNavController : NavController

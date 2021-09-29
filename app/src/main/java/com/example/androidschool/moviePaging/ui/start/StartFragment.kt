@@ -13,21 +13,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidschool.moviePaging.R
-import com.example.androidschool.moviePaging.data.dao.DaoMovie
-import com.example.androidschool.moviePaging.data.dao.DaoMovieSearchResponse
-import com.example.androidschool.moviePaging.data.dao.database.MovieSearchResponseDatabase
 import com.example.androidschool.moviePaging.databinding.FragmentStartBinding
 import com.example.androidschool.moviePaging.model.Movie
 import com.example.androidschool.moviePaging.network.MovieSearchResponse
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class StartFragment : Fragment() {
 
     private var _binding: FragmentStartBinding? = null
     private val mBinding get() = _binding!!
-    private val mViewModel: StartFragmentViewModel by viewModels()
+    private val mViewModel by viewModels<StartFragmentViewModel>()
     lateinit var mAdapter: StartFragmentPopularsAdapter
     lateinit var mPopularsObserver: Observer<List<Movie>>
 
@@ -63,30 +61,6 @@ class StartFragment : Fragment() {
             totalResults = 0
         )
 
-        val daoMovieSearchResponse = DaoMovieSearchResponse(
-            page = movieResponse.page,
-            totalResults = movieResponse.totalResults,
-            totalPages = movieResponse.totalPages
-        )
-
-        val daoMovie = DaoMovie(
-            searchResponsePage = daoMovieSearchResponse.page,
-            movieId = movie.id,
-            adult = movie.adult,
-            backdropPath = movie.backdropPath,
-            originalLanguage = movie.originalLanguage,
-            originalTitle = movie.originalTitle,
-            overview = movie.overview,
-            popularity = movie.popularity,
-            posterPath = movie.posterPath,
-            releaseDate = movie.releaseDate,
-            title = movie.title,
-            video = movie.video,
-            voteAverage = movie.voteAverage,
-            voteCount = movie.voteCount
-        )
-
-        val dao = MovieSearchResponseDatabase.getInstance(requireContext()).movieDao
 
         lifecycleScope.launch(Dispatchers.IO) {
 //            dao.insertMovieSearchResponse()

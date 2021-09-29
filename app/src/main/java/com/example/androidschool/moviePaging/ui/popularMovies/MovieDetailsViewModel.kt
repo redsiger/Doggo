@@ -1,28 +1,29 @@
 package com.example.androidschool.moviePaging.ui.popularMovies
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidschool.moviePaging.di.App
 import com.example.androidschool.moviePaging.model.MovieById
 import com.example.androidschool.moviePaging.network.MovieService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MovieDetailsViewModel(
-    val movieId: String
+@HiltViewModel
+class MovieDetailsViewModel @Inject constructor(
+    val apiService: MovieService,
+    val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     var movieById = MutableLiveData<MovieById>()
     var isMoviesLoaded = MutableLiveData<Boolean>(false)
-
-    @Inject
-    lateinit var apiService: MovieService
+    var movieId: String = savedStateHandle.get<String>("MovieId").toString()
 
     init {
-        App.appComponent.inject(this)
         getMovieById()
     }
 

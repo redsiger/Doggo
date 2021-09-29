@@ -1,11 +1,13 @@
 package com.example.androidschool.moviePaging.di
 
+import com.example.androidschool.moviePaging.data.MovieRepository
 import com.example.androidschool.moviePaging.data.utils.API_KEY
 import com.example.androidschool.moviePaging.data.utils.BASE_URL
 import com.example.androidschool.moviePaging.network.MovieService
-import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,7 +16,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class MovieServiceModule {
+@InstallIn(SingletonComponent::class)
+object RetrofitModule {
+
+    @Singleton
+    @Provides
+    fun provideRepository(
+        movieService: MovieService
+    ): MovieRepository {
+        return MovieRepository(movieService)
+    }
 
     @Singleton
     @Provides
@@ -26,7 +37,7 @@ class MovieServiceModule {
     @Provides
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+        gsonConverterFactory: GsonConverterFactory,
     ): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
@@ -74,5 +85,4 @@ class MovieServiceModule {
     fun provideGsonConverterFactory(): GsonConverterFactory {
         return GsonConverterFactory.create()
     }
-
 }

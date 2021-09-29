@@ -1,6 +1,5 @@
 package com.example.androidschool.moviePaging.network
 
-import androidx.room.Entity
 import com.example.androidschool.moviePaging.model.Movie
 import com.google.gson.annotations.SerializedName
 

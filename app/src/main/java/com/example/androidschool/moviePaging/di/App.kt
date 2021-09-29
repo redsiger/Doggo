@@ -4,28 +4,18 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
-import com.example.androidschool.moviePaging.data.dao.database.MovieSearchResponseDatabase
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
+import dagger.hilt.android.HiltAndroidApp
 
 //const val CHANNEL_1_ID: String = "1"
 lateinit var APPLICATION_CONTEXT: Application
 
+@HiltAndroidApp
 class App: Application() {
-
-    companion object {
-        lateinit var appComponent: AppComponent
-    }
 
     override fun onCreate() {
         super.onCreate()
-        initializeDagger()
-        initRoom()
         createNotificationChannels()
-    }
-
-    private fun initRoom() {
-        APPLICATION_CONTEXT = this
-//        val roomDao = MovieSearchResponseDatabase.getInstance(this).movieDao
     }
 
     private fun createNotificationChannels() {
@@ -40,11 +30,4 @@ class App: Application() {
             manager.createNotificationChannel(channel1)
         }
     }
-
-    private fun initializeDagger() {
-        appComponent = DaggerAppComponent.builder()
-            .build()
-    }
-
-
 }

@@ -15,18 +15,19 @@ import com.example.androidschool.moviePaging.notifications.AppNotification
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
 import com.example.androidschool.moviePaging.notifications.TimePickerFragment
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MovieDetailsFragment: Fragment() {
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val mBinding get() = _binding!!
-//    private val args : MovieDetailsFragmentArgs by navArgs()
-//    private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(args.movieId!!)
+//    private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(
+//        requireArguments()
+//            .getString("MovieId")!!)
 //    }
-    private val mViewModel: MovieDetailsViewModel by viewModels{ MovieDetailsViewModelFactory(
-        requireArguments()
-            .getString("MovieId")!!)
-    }
+    private val mViewModel: MovieDetailsViewModel by viewModels<MovieDetailsViewModel>()
+
     lateinit var mMovieByIdObserver: Observer<MovieById>
     lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
     lateinit var mMovieById: MovieById
@@ -119,15 +120,6 @@ class MovieDetailsFragment: Fragment() {
                 }
             }
         }
-
-        mIsMoviesLoadedObserver = Observer { isLoaded ->
-            when (isLoaded) {
-                true -> mBinding.progressBarFragmentMovieDetails.visibility = View.GONE
-                false -> mBinding.progressBarFragmentMovieDetails.visibility = View.VISIBLE
-            }
-        }
-
-        mViewModel.isMoviesLoaded.observe(viewLifecycleOwner, mIsMoviesLoadedObserver)
 
         mViewModel.movieById.observe(viewLifecycleOwner, mMovieByIdObserver)
 
