@@ -20,20 +20,20 @@
     <fragment
         android:id="@+id/popularMoviesFragment"
         android:name="com.example.androidschool.moviePaging.ui.popularMovies.PopularMoviesFragment"
-        android:label="Popular"
-        tools:layout="@layout/fragment_popular_movies" >
+        android:label="@string/popular_fragment_title"
+        tools:layout="@layout/fragment_popular_movies">
         <action
             android:id="@+id/action_popularMoviesFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.example.androidschool.moviePaging.ui.popularMovies.MovieDetailsFragment"
+        android:name="com.example.androidschool.moviePaging.ui.movieDetail.MovieDetailsFragment"
         android:label="{MovieTitle}"
         tools:layout="@layout/fragment_movie_details" />
     <argument
@@ -45,6 +45,6 @@
     <fragment
         android:id="@+id/startFragment"
         android:name="com.example.androidschool.moviePaging.ui.start.StartFragment"
-        android:label="MovieDataBase"
+        android:label="@string/start_fragment_title"
         tools:layout="@layout/fragment_start" />
 </navigation>

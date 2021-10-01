@@ -28,7 +28,13 @@ class StartFragmentPopularsAdapter(private val context: Context): RecyclerView.A
 
         fun bind(movie: Movie) {
             with(mBinding) {
-                Picasso.get().load(TMDB_IMG_URL + movie.posterPath).resizeDimen(R.dimen.start_fragment_section_movie_width, R.dimen.start_fragment_section_movie_height).into(startFragmentPopularsMovieImg)
+                if (movie.posterPath != "null") {
+                    Picasso.get().load(TMDB_IMG_URL + movie.posterPath).resizeDimen(R.dimen.start_fragment_section_movie_width, R.dimen.start_fragment_section_movie_height).into(startFragmentPopularsMovieImg)
+                } else {
+                    startFragmentPopularsMovieImg.setImageResource(R.drawable.ic_movie_card_viewholder)
+                }
+                startFragmentMovieRating.text = movie.voteAverage.toString()
+                startFragmentMovieTitle.text = movie.title
             }
 
 

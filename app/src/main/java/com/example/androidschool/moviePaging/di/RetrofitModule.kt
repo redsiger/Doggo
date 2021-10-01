@@ -64,6 +64,7 @@ object RetrofitModule {
                 .url
                 .newBuilder()
                 .addQueryParameter("api_key", API_KEY)
+                .addQueryParameter("language", LANGUAGE)
                 .build()
             val request = it.request()
                 .newBuilder()

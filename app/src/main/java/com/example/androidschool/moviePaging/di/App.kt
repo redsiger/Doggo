@@ -6,9 +6,11 @@ import android.app.NotificationManager
 import android.os.Build
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
 import dagger.hilt.android.HiltAndroidApp
+import java.util.*
 
 //const val CHANNEL_1_ID: String = "1"
 lateinit var APPLICATION_CONTEXT: Application
+lateinit var LANGUAGE: String
 
 @HiltAndroidApp
 class App: Application() {
@@ -16,6 +18,11 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannels()
+        defineSystemLanguage()
+    }
+
+    private fun defineSystemLanguage() {
+        LANGUAGE = Locale.getDefault().language
     }
 
     private fun createNotificationChannels() {
@@ -30,4 +37,6 @@ class App: Application() {
             manager.createNotificationChannel(channel1)
         }
     }
+
+
 }

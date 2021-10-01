@@ -1,15 +1,16 @@
-package com.example.androidschool.moviePaging.ui.popularMovies
+package com.example.androidschool.moviePaging.ui.movieDetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidschool.moviePaging.data.utils.TMDB_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailsBinding
+import com.example.androidschool.moviePaging.network.Credits.CastMember
 import com.example.androidschool.moviePaging.network.MovieById
 import com.example.androidschool.moviePaging.notifications.AppNotification
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
@@ -29,8 +30,12 @@ class MovieDetailsFragment: Fragment() {
     private val mViewModel: MovieDetailsViewModel by viewModels<MovieDetailsViewModel>()
 
     lateinit var mMovieByIdObserver: Observer<MovieById>
-    lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
     lateinit var mMovieById: MovieById
+    lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
+    lateinit var mMovieCastObserver: Observer<List<CastMember>>
+    lateinit var mMovieCast: List<CastMember>
+    lateinit var mCastAdapter: MovieDetailsCastAdapter
+
     lateinit var mAppNotification: AppNotification
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,17 +93,16 @@ class MovieDetailsFragment: Fragment() {
         }
 
         mBinding.apply {
-            movieDetailFragmentBackgroundImg.setOnClickListener(createNotificationClickListener)
+            movieDetailFragmentButtonReminder.setOnClickListener(createNotificationClickListener)
+            movieDetailFragmentBackgroundImg.setOnClickListener(deleteNotificationClickListener)
         }
-//        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(createNotificationClickListener)
-//        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(showTimePickerDialogListener)
 
         mMovieByIdObserver = Observer { movie ->
             mMovieById = movie
             val genresList = movie.genres
             val countriesList = movie.productionCountries
             with(mBinding) {
-                movieDetailFragmentTitle.text = movie.originalTitle
+                movieDetailFragmentTitle.text = movie.title
                 movieDetailFragmentOverviewBody.text = movie.overview
                 movieDetailFragmentReleaseDate.text = movie.releaseDate.substring(0, 4)
 
@@ -128,7 +132,7 @@ class MovieDetailsFragment: Fragment() {
                 }
 
                 movieDetailFragmentAboutCountries.text = countriesString
-
+                movieDetailFragmentRating.text = movie.voteAverage.toString()
 
                 if (movie.backdropPath != null) {
                     Picasso.get()
@@ -142,7 +146,23 @@ class MovieDetailsFragment: Fragment() {
 
         mViewModel.movieById.observe(viewLifecycleOwner, mMovieByIdObserver)
 
+        initCastSection()
+
         return mBinding.root
+    }
+
+    private fun initCastSection() {
+        mCastAdapter = MovieDetailsCastAdapter(requireContext())
+        mBinding.movieDetailFragmentCastRecycler.adapter = mCastAdapter
+
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        mBinding.movieDetailFragmentCastRecycler.layoutManager = layoutManager
+
+        mMovieCastObserver = Observer {
+            mCastAdapter.setList(it)
+        }
+
+        mViewModel.movieByIdCredits.observe(viewLifecycleOwner, mMovieCastObserver)
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.androidschool.moviePaging.network
 
+import com.example.androidschool.moviePaging.network.Credits.CreditsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -22,7 +23,10 @@ interface MovieService {
     ) : Response<MovieSearchResponse>
 
     @GET("movie/{id}")
-    suspend fun getMovieById(@Path ("id") id: String) : Response<MovieById>
+    suspend fun getMovieById(@Path ("id") id: String): Response<MovieById>
+
+    @GET("movie/{id}/credits")
+    suspend fun getMovieCast(@Path("id") id: String): Response<CreditsResponse>
 
 //    companion object {
 //        operator fun invoke() : MovieService {

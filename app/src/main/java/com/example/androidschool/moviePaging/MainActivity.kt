@@ -3,6 +3,7 @@ package com.example.androidschool.moviePaging
 import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -49,5 +50,11 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        finish()
+        startActivity(intent)
     }
 }

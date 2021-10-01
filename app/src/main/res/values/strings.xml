@@ -13,4 +13,7 @@
     <string name="movie_detail_genres_title">Genres:</string>
     <string name="movie_detail_cast_title">Cast</string>
     <string name="movie_detail_countries_title">Countries:</string>
+    <string name="button_remind_me_later">remind me later</string>
+    <string name="start_fragment_title">MovieDatabase</string>
+    <string name="popular_fragment_title">Popular</string>
 </resources>
