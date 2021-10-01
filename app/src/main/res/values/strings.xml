@@ -16,4 +16,5 @@
     <string name="button_remind_me_later">remind me later</string>
     <string name="start_fragment_title">MovieDatabase</string>
     <string name="popular_fragment_title">Popular</string>
+    <string name="datePicker_title">Select date</string>
 </resources>

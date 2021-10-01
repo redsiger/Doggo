@@ -16,4 +16,5 @@
     <string name="button_remind_me_later">напомнить позже</string>
     <string name="start_fragment_title">Фильмы</string>
     <string name="popular_fragment_title">Популярное</string>
+    <string name="datePicker_title">Выберите дату</string>
 </resources>
