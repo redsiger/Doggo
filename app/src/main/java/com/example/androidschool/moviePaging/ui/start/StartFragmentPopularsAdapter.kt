@@ -54,7 +54,6 @@ class StartFragmentPopularsAdapter(private val context: Context): RecyclerView.A
         val id = movie.id.toString()
         val movieTitle = movie.title
         bundle.putString("MovieId", id)
-        bundle.putString("MovieTitle", movieTitle)
 
         val anims = NavOptions.Builder()
             .setEnterAnim(R.anim.slide_in_down)

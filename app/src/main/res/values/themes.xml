@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Doggo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Doggo" parent="Theme.AppTheme">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
@@ -14,11 +14,5 @@
         <!-- Customize your theme here. -->
         <item name="colorSurface">@color/surfaceDay</item>
         <item name="colorOnSurface">@color/onSurfaceDay</item>
-        <item name="colorControlNormal">@color/white</item>
-
-        <item name="android:fontFamily">@font/montserrat</item>
-
-        <item name="android:ambientShadowAlpha">0.2</item>
-        <item name="android:spotShadowAlpha">0.2</item>
     </style>
 </resources>

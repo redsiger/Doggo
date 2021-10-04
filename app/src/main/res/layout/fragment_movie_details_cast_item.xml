@@ -4,7 +4,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.movieDetail.MovieDetailsFragmentCastItem">
+    tools:context=".ui.movieDetail.MovieDetailsFragmentCastItem"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/ripple"
+    >
 
    <androidx.cardview.widget.CardView
        android:id="@+id/cast_member_photo_container"
@@ -30,7 +34,7 @@
                app:layout_constraintTop_toTopOf="parent"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintEnd_toEndOf="parent"
-               tools:background="?attr/colorAccent"/>
+               tools:background="?attr/colorAccent" />
 
            <View
                android:id="@+id/cast_member_photo_shade"

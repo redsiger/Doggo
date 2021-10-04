@@ -1,6 +1,8 @@
 package com.example.androidschool.moviePaging.ui.movieDetail
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +23,11 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.format.DateTimeFormatter
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MovieDetailsFragment(): Fragment() {
@@ -40,31 +43,17 @@ class MovieDetailsFragment(): Fragment() {
     lateinit var mMovieCast: List<CastMember>
     lateinit var mCastAdapter: MovieDetailsCastAdapter
 
+    @Inject
     lateinit var mDatePicker: MaterialDatePicker<Long>
+    @Inject
     lateinit var mTimePicker: MaterialTimePicker
+    @Inject
+    lateinit var mDateAndTime: Calendar
     lateinit var mAppNotification: AppNotification
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAppNotification = AppNotification(requireContext())
-    }
-
-    private fun showTimePicker() {
-        // create a new instance of TimePicker
-        val timePickerFragment = TimePickerFragment()
-        val supportFragmentManager = requireActivity().supportFragmentManager
-
-        supportFragmentManager.setFragmentResultListener(
-            "PICKED_DATE",
-            viewLifecycleOwner
-        ) {
-            resultKey, bundle -> if (resultKey == "REQUEST_KEY") {
-                val pickedHour = bundle.getString("SELECTED_DATE")
-                mAppNotification.pushNotification(requireActivity(), CHANNEL_1_ID, mMovieById.title, pickedHour!!, 1)
-            }
-        }
-
-        timePickerFragment.show(supportFragmentManager, "TimePickerFragment")
     }
 
     override fun onCreateView(
@@ -78,47 +67,55 @@ class MovieDetailsFragment(): Fragment() {
         initNotificationCreateClickListener()
         initNotificationDeleteClickListener()
         initCastSection()
-        initDatePicker()
+        initTimePicker()
+        initDatePicker(mTimePicker)
 
         return mBinding.root
     }
 
-    private fun initDatePicker() {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-        val today = MaterialDatePicker.todayInUtcMilliseconds()
+    private fun initTimePicker() {
+        mTimePicker.addOnPositiveButtonClickListener {
+            mDateAndTime.set(Calendar.MILLISECOND, 0)
+            mDateAndTime.set(Calendar.SECOND, 0)
+            mDateAndTime.set(Calendar.MINUTE, mTimePicker.minute)
+            mDateAndTime.set(Calendar.HOUR_OF_DAY, mTimePicker.hour)
+            Log.e("DATE PICKER", mDateAndTime.toString())
 
-        calendar.timeInMillis = MaterialDatePicker.todayInUtcMilliseconds()
-        calendar[Calendar.MONTH] = Calendar.OCTOBER
-        val octThisYear = calendar.timeInMillis
+            var pickedDateAndTime: String = mDateAndTime.get(Calendar.YEAR).toString()
+            pickedDateAndTime += "-"
+            val pickedMonth = (mDateAndTime.get(Calendar.MONTH) + 1) % 12
+            pickedDateAndTime += pickedMonth.toString()
+            pickedDateAndTime += "-"
+            pickedDateAndTime += mDateAndTime.get(Calendar.DAY_OF_MONTH).toString()
+            pickedDateAndTime += " "
+            pickedDateAndTime += mDateAndTime.get(Calendar.HOUR_OF_DAY).toString()
+            pickedDateAndTime += ":"
+            pickedDateAndTime += mDateAndTime.get(Calendar.MINUTE).toString()
 
-        calendar.timeInMillis = MaterialDatePicker.todayInUtcMilliseconds()
-        calendar[Calendar.MONTH] = Calendar.NOVEMBER
-        val novThisYear = calendar.timeInMillis
+//            val intent = Intent()
+//            intent.action =
 
-        val constraints =
-            CalendarConstraints.Builder()
-                .setStart(today)
-                .setValidator(DateValidatorPointForward.now())
-                .build()
+            val context = requireContext()
+            val bundle = Bundle()
+            bundle.putInt("MovieId", mMovieById.id)
+            mAppNotification.pushNotification(
+                context,
+                CHANNEL_1_ID,
+                mMovieById.title,
+                pickedDateAndTime,
+                bundle,
+                1
+            )
+        }
+    }
 
-        mDatePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(R.string.datePicker_title)
-            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-            .setCalendarConstraints(constraints)
-            .build()
-
+    private fun initDatePicker(timePicker: MaterialTimePicker) {
         mDatePicker.addOnPositiveButtonClickListener {
-            val view = mBinding.movieDetailFragmentButtonReminder
             val pickedDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
             pickedDate.time = Date(it)
-
-            val pickedDateOfYear = pickedDate.time
-            val pickedYear = pickedDate.get(Calendar.YEAR).toString()
-            val pickedMonth = pickedDate.get(Calendar.MONTH).toString()
-            val pickedDay = pickedDate.get(Calendar.DAY_OF_MONTH).toString()
-            val pickedDayOfWeek = pickedDate.get(Calendar.DAY_OF_WEEK).toString()
-
-            Snackbar.make(view, ""+ pickedDateOfYear, Snackbar.LENGTH_SHORT).show()
+            mDateAndTime.timeInMillis = it
+            timePicker.show(childFragmentManager, "timePicker")
+            Log.e("DATE PICKER", mDateAndTime.toString())
         }
 
         val showPickerClickListener = View.OnClickListener {
@@ -131,15 +128,18 @@ class MovieDetailsFragment(): Fragment() {
     private fun initNotificationCreateClickListener() {
         val createNotificationClickListener = View.OnClickListener {
             val context = requireContext()
+            val bundle = Bundle()
+            bundle.putInt("MovieId", mMovieById.id)
             mAppNotification.pushNotification(
                 context,
                 CHANNEL_1_ID,
                 mMovieById.title,
                 mMovieById.overview,
+                bundle,
                 1
             )
         }
-//        mBinding.movieDetailFragmentButtonReminder.setOnClickListener(createNotificationClickListener)
+        mBinding.movieDetailFragmentTitle.setOnClickListener(createNotificationClickListener)
     }
 
     private fun initNotificationDeleteClickListener() {
@@ -165,9 +165,9 @@ class MovieDetailsFragment(): Fragment() {
                     genresString = ""
                     genresList.forEach { genre ->
                         if (genre != genresList.last()) {
-                            genresString = genresString + " " + genre.name + ","
+                            genresString = genresString + genre.name + ", "
                         } else {
-                            genresString = genresString + " " + genre.name
+                            genresString += genre.name
                         }
                     }
                 }
@@ -178,15 +178,17 @@ class MovieDetailsFragment(): Fragment() {
                     countriesString = ""
                     countriesList.forEach { country ->
                         if (country != countriesList.last()) {
-                            countriesString = countriesString + " " + country.name + ","
+                            countriesString = countriesString + country.name + ", "
                         } else {
-                            countriesString = countriesString + " " + country.name
+                            countriesString += country.name
                         }
                     }
                 }
 
                 movieDetailFragmentAboutCountries.text = countriesString
+//                movieDetailFragmentRating.text = getString(R.string.movie_detail_rating, movie.voteAverage.toString())
                 movieDetailFragmentRating.text = movie.voteAverage.toString()
+                movieDetailFragmentRatingCount.text = getString(R.string.movie_detail_rating, movie.voteCount.toString())
 
                 if (movie.backdropPath != null) {
                     Picasso.get()

@@ -20,6 +20,7 @@ class StartFragmentViewModel @Inject constructor(
     ): ViewModel() {
 
     var movieResponse: MutableLiveData<MovieSearchResponse> = MutableLiveData()
+    var isDataLoaded: MutableLiveData<Boolean> = MutableLiveData(false)
     var recyclerListData: MutableLiveData<List<Movie>> = MutableLiveData()
 
     init {
@@ -31,6 +32,7 @@ class StartFragmentViewModel @Inject constructor(
 
     suspend fun getPopularMovies() {
         recyclerListData.postValue(movieRepository.getPopularMovies())
+        isDataLoaded.postValue(true)
     }
 
 //    suspend fun storeMovieResponseInRoom(response: MovieSearchResponse) {

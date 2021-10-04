@@ -6,6 +6,9 @@
     <dimen name="card_corner_radius">10dp</dimen>
     <dimen name="start_fragment_section_radius">20dp</dimen>
 
+    <!--Pickers-->
+    <dimen name="picker_corner_radius">20dp</dimen>
+
     <!--margins-->
     <dimen name="app_margin_extraLarge">24dp</dimen>
     <dimen name="app_margin_large">16dp</dimen>

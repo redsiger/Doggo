@@ -10,6 +10,7 @@ import com.example.androidschool.moviePaging.model.Movie
 import com.example.androidschool.moviePaging.network.DEFAULT_PAGE_SIZE
 import com.example.androidschool.moviePaging.network.MovieService
 import kotlinx.coroutines.flow.Flow
+import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,9 +35,13 @@ class MovieRepository @Inject constructor(val movieService: MovieService) {
 //    }
 
     suspend fun getPopularMovies(): List<Movie>? {
-        val response = movieService.getPopularMovies()
-        if (response.isSuccessful) {
-               return response.body()?.results
+        try {
+            val response = movieService.getPopularMovies()
+            if (response.isSuccessful) {
+                return response.body()?.results
+            }
+        } catch (e: Exception) {
+            return emptyList()
         }
         return emptyList()
     }

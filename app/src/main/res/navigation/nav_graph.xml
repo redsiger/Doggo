@@ -34,13 +34,9 @@
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.androidschool.moviePaging.ui.movieDetail.MovieDetailsFragment"
-        android:label="{MovieTitle}"
         tools:layout="@layout/fragment_movie_details" />
     <argument
         android:name="MovieId"
-        android:defaultValue="550" />
-    <argument
-        android:name="MovieTitle"
         android:defaultValue="550" />
     <fragment
         android:id="@+id/startFragment"

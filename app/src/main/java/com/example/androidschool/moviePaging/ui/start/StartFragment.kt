@@ -16,6 +16,7 @@ import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.databinding.FragmentStartBinding
 import com.example.androidschool.moviePaging.model.Movie
 import com.example.androidschool.moviePaging.network.MovieSearchResponse
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ class StartFragment : Fragment() {
     private val mViewModel by viewModels<StartFragmentViewModel>()
     lateinit var mAdapter: StartFragmentPopularsAdapter
     lateinit var mPopularsObserver: Observer<List<Movie>>
+    lateinit var mIsDataLoadedObserver: Observer<Boolean>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,5 +88,26 @@ class StartFragment : Fragment() {
             Navigation.findNavController(it).navigate(R.id.popularMoviesFragment)
         }
         mBinding.sectionPopularMore.setOnClickListener(moreOnclickListener)
+        initRefreshing()
+    }
+
+    private fun initRefreshing() {
+        mIsDataLoadedObserver = Observer { isDataLoaded ->
+            when (isDataLoaded) {
+                false -> mBinding.refreshStartFragment.isRefreshing = true
+                true -> mBinding.refreshStartFragment.isRefreshing = false
+            }
+        }
+        mBinding.refreshStartFragment.setOnRefreshListener {
+            refreshFragment()
+        }
+        mViewModel.isDataLoaded.observe(viewLifecycleOwner, mIsDataLoadedObserver)
+    }
+
+    private fun refreshFragment() {
+        Snackbar.make(mBinding.refreshStartFragment, R.string.fragment_updated, Snackbar.LENGTH_SHORT).show()
+        lifecycleScope.launch(Dispatchers.IO) {
+            mViewModel.getPopularMovies()
+        }
     }
 }

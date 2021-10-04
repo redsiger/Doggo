@@ -52,6 +52,11 @@
         <item name="android:textSize">@dimen/app_text_normal</item>
     </style>
 
+    <style name="style_movie_rating_by">
+        <item name="android:textColor">@color/tag_color</item>
+        <item name="android:textSize">@dimen/app_text_small</item>
+    </style>
+
     <style name="style_movie_img_cornered">
         <item name="cornerSize">8dp</item>
         <item name="color">@color/white</item>

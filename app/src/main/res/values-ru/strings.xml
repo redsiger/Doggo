@@ -10,11 +10,13 @@
     <string name="section_more">больше</string>
     <string name="movie_detail_overview_title">Описание</string>
     <string name="movie_detail_about_title">О фильме</string>
-    <string name="movie_detail_genres_title">Жанр:</string>
+    <string name="movie_detail_genres_title">Жанр</string>
     <string name="movie_detail_cast_title">Актерский состав</string>
     <string name="movie_detail_countries_title">Страна:</string>
     <string name="button_remind_me_later">напомнить позже</string>
     <string name="start_fragment_title">Фильмы</string>
     <string name="popular_fragment_title">Популярное</string>
-    <string name="datePicker_title">Выберите дату</string>
+    <string name="timePicker">Выберите время</string>
+    <string name="datePicker">Выберите дату</string>
+    <string name="fragment_updated">Обновлено</string>
 </resources>
