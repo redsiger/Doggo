@@ -1,5 +1,6 @@
 package com.example.androidschool.moviePaging.ui.movieDetail
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +10,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidschool.moviePaging.R
+import com.example.androidschool.moviePaging.data.room.Alarm
+import com.example.androidschool.moviePaging.data.room.AlarmsDao
+import com.example.androidschool.moviePaging.data.room.AlarmsDatabase
 import com.example.androidschool.moviePaging.data.utils.TMDB_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailsBinding
 import com.example.androidschool.moviePaging.network.Credits.CastMember
 import com.example.androidschool.moviePaging.network.MovieById
+import com.example.androidschool.moviePaging.notifications.AlarmReceiver
 import com.example.androidschool.moviePaging.notifications.AppNotification
 import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
 import com.example.androidschool.moviePaging.notifications.TimePickerFragment
@@ -26,6 +32,9 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -51,9 +60,13 @@ class MovieDetailsFragment(): Fragment() {
     lateinit var mDateAndTime: Calendar
     lateinit var mAppNotification: AppNotification
 
+    @Inject
+    lateinit var mAlarmsRoomDao: AlarmsDao
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAppNotification = AppNotification(requireContext())
+//        mAlarmsRoomDao = AlarmsDatabase.getInstance(requireContext())!!.getAlarmsDao()
     }
 
     override fun onCreateView(
@@ -92,26 +105,35 @@ class MovieDetailsFragment(): Fragment() {
             pickedDateAndTime += ":"
             pickedDateAndTime += mDateAndTime.get(Calendar.MINUTE).toString()
 
-//            val intent = Intent()
-//            intent.action =
+            val intent = Intent(requireContext(), AlarmReceiver::class.java)
+//            intent.action = mMovieById.title
+            intent.action = "PUSH_NOTIFICATION " + mMovieById.title
 
-            val context = requireContext()
-            val bundle = Bundle()
-            bundle.putInt("MovieId", mMovieById.id)
-            mAppNotification.pushNotification(
-                context,
-                CHANNEL_1_ID,
-                mMovieById.title,
-                pickedDateAndTime,
-                bundle,
-                1
-            )
+            intent.putExtra("MovieId", mMovieById.id.toString())
+            intent.putExtra("MovieTitle", mMovieById.title)
+            intent.putExtra("MovieOverview", mMovieById.overview)
+
+            val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
+            mAppNotification.createAlarm(pendingIntent, mDateAndTime.timeInMillis)
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                val alarm: Alarm = Alarm(
+                    mMovieById.id,
+                    mMovieById.title,
+                    mDateAndTime.timeInMillis
+                )
+                mAlarmsRoomDao.addAlarm(alarm)
+            }
+
+            val dateFormatter = SimpleDateFormat("HH:mm dd-MMMM-yyyy")
+            val reminderTime: String = getString(R.string.reminder_is_set, dateFormatter.format(mDateAndTime.time))
+            Snackbar.make(mBinding.movieDetailFragmentCastRecycler, reminderTime, Snackbar.LENGTH_SHORT).show()
         }
     }
 
     private fun initDatePicker(timePicker: MaterialTimePicker) {
         mDatePicker.addOnPositiveButtonClickListener {
-            val pickedDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+            val pickedDate = Calendar.getInstance(TimeZone.getTimeZone("Moscow"))
             pickedDate.time = Date(it)
             mDateAndTime.timeInMillis = it
             timePicker.show(childFragmentManager, "timePicker")
@@ -136,7 +158,7 @@ class MovieDetailsFragment(): Fragment() {
                 mMovieById.title,
                 mMovieById.overview,
                 bundle,
-                1
+                mMovieById.id
             )
         }
         mBinding.movieDetailFragmentTitle.setOnClickListener(createNotificationClickListener)
@@ -145,7 +167,7 @@ class MovieDetailsFragment(): Fragment() {
     private fun initNotificationDeleteClickListener() {
         val deleteNotificationClickListener = View.OnClickListener {
             val context = requireContext()
-            mAppNotification.deleteNotification(context,1)
+            mAppNotification.deleteNotification(context,mMovieById.id)
         }
         mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(deleteNotificationClickListener)
     }

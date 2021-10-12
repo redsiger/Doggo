@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.databinding.FragmentStartBinding
 import com.example.androidschool.moviePaging.model.Movie
@@ -77,6 +78,10 @@ class StartFragment : Fragment() {
 
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         mBinding.startFragmentPopularRecycler.layoutManager = layoutManager
+
+////        SNAPHELPER
+//        val snapHelper = LinearSnapHelper()
+//        snapHelper.attachToRecyclerView(mBinding.startFragmentPopularRecycler)
 
         mPopularsObserver = Observer {
             mAdapter.setList(it)

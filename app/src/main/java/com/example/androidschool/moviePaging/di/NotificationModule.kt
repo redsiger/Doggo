@@ -13,6 +13,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import java.util.*
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -20,14 +21,20 @@ import javax.inject.Singleton
 object NotificationModule {
 
     @Provides
+    @Singleton
+    @Named("NOTIFICATION_ID")
+    fun provideNotificationId(): Int = 1
+
+    @Provides
     fun provideTimeAndDate(): Calendar {
-        return Calendar.getInstance()
+        return Calendar.getInstance(TimeZone.getDefault())
     }
 
     @Provides
     fun provideDatePicker(): MaterialDatePicker<Long> {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-        val today = MaterialDatePicker.todayInUtcMilliseconds()
+        val calendar = Calendar.getInstance(TimeZone.getDefault())
+//        val today = MaterialDatePicker.todayInUtcMilliseconds()
+        val today = Calendar.getInstance(TimeZone.getDefault()).timeInMillis
 
         calendar.timeInMillis = MaterialDatePicker.todayInUtcMilliseconds()
         calendar[Calendar.MONTH] = Calendar.OCTOBER
@@ -52,7 +59,7 @@ object NotificationModule {
 
     @Provides
     fun provideTimePicker(): MaterialTimePicker {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val calendar = Calendar.getInstance(TimeZone.getDefault())
 
         return MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_24H)

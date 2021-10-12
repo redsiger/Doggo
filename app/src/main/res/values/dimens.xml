@@ -4,7 +4,7 @@
     <!--cards-->
     <dimen name="card_elevation">10dp</dimen>
     <dimen name="card_corner_radius">10dp</dimen>
-    <dimen name="start_fragment_section_radius">20dp</dimen>
+    <dimen name="start_fragment_section_radius">10dp</dimen>
 
     <!--Pickers-->
     <dimen name="picker_corner_radius">20dp</dimen>

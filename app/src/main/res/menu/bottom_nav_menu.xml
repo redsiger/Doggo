@@ -11,4 +11,9 @@
         android:id="@+id/testFragment"
         android:title="@string/search_movies_title"/>
 
+    <item
+        android:icon="@drawable/ic_alarms"
+        android:id="@+id/alarmsFragment"
+        android:title="@string/alarms_fragment_title"/>
+
 </menu>

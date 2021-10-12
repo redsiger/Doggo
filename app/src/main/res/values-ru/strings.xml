@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">База данных фильмов</string>
+    <string name="app_name">Фильмы</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Привет пустой фрагмент</string>
     <string name="failed_to_load_movies">Не удалось загрузить фильмы</string>
@@ -12,11 +12,13 @@
     <string name="movie_detail_about_title">О фильме</string>
     <string name="movie_detail_genres_title">Жанр</string>
     <string name="movie_detail_cast_title">Актерский состав</string>
-    <string name="movie_detail_countries_title">Страна:</string>
+    <string name="movie_detail_countries_title">Страны</string>
     <string name="button_remind_me_later">напомнить позже</string>
     <string name="start_fragment_title">Фильмы</string>
     <string name="popular_fragment_title">Популярное</string>
     <string name="timePicker">Выберите время</string>
     <string name="datePicker">Выберите дату</string>
     <string name="fragment_updated">Обновлено</string>
+    <string name="reminder_is_set">Напоминание установлено на %1$s</string>
+    <string name="alarms_fragment_title">Будильники</string>
 </resources>
