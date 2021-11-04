@@ -6,61 +6,107 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.androidschool.moviePaging.MainActivity
 import com.example.androidschool.moviePaging.R
+import com.example.androidschool.moviePaging.data.room.alarms.Alarm
+import com.example.androidschool.moviePaging.data.room.alarms.AlarmsDao
+import kotlinx.coroutines.*
 
 const val CHANNEL_1_ID: String = "1"
 
-@RequiresApi(Build.VERSION_CODES.M)
-class AppNotification(private val mContext: Context) {
+class AppNotification(
+    val mContext: Context,
+    val mAlarmManager: AlarmManager,
+    val mNotificationManager: NotificationManagerCompat,
+    val mAlarmsDao: AlarmsDao,
+    val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+) {
 
-    private var mNotificationManager: NotificationManagerCompat = NotificationManagerCompat.from(mContext)
-    private var mAlarmManager: AlarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    private var NOTIFICATION_ID: Int = 1
-
-
-    init {
-        Log.e("AppNotificationContext", mContext.toString())
+    suspend fun createNotificationAndAlarm(movieId: Int, movieTitle: String, time: Long) {
+        createNotification(movieId, movieTitle, time)
+        createAlarm(movieId, movieTitle, time)
     }
 
-    fun createAlarm(pendingIntent: PendingIntent, time: Long) {
-        val time1 = System.currentTimeMillis() + 5000
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+    fun createNotification(movieId: Int, movieTitle: String, time: Long) {
+        val pendingIntent = createPendingIntent(movieId, movieTitle)
+
+        val sdk = Build.VERSION.SDK_INT
+        when {
+            sdk >= Build.VERSION_CODES.M -> {
+                mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+            }
+            sdk >= Build.VERSION_CODES.LOLLIPOP -> {
+                mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+            }
+            else -> {
+                mAlarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+            }
         }
     }
 
+    suspend fun createAlarm(movieId: Int, movieTitle: String, time: Long) {
+//        CoroutineScope(defaultDispatcher).launch {
+            val alarm = Alarm(
+                movieId,
+                movieTitle,
+                time
+            )
+            mAlarmsDao.addAlarm(alarm)
+//        }
+    }
+
+    suspend fun deleteNotificationAndAlarm(movieId: Int, movieTitle: String) {
+        deleteNotification(movieId, movieTitle)
+        deleteAlarm(movieId)
+    }
+
+    fun deleteNotification(movieId: Int, movieTitle: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mAlarmManager.cancel(createPendingIntent(movieId, movieTitle))
+        }
+    }
+
+    suspend fun deleteAlarm(movieId: Int) {
+//        CoroutineScope(defaultDispatcher).launch {
+            mAlarmsDao.deleteAlarm(movieId)
+//        }
+    }
+
+    private fun createPendingIntent(movieId: Int, movieTitle: String): PendingIntent {
+        val intent = Intent(mContext, AlarmReceiver::class.java)
+        intent.action = "PUSH_NOTIFICATION $movieTitle"
+        intent.putExtra("MovieId", movieId.toString())
+        intent.putExtra("MovieTitle", movieTitle)
+
+        return PendingIntent.getBroadcast(mContext, 0, intent, 0)
+    }
+
+
     fun pushNotification(
-        context: Context,
         channel: String,
         title: String,
-        text: String,
         bundle: Bundle,
         notificationId: Int
     ) {
-        val activityIntent = Intent(context, MainActivity::class.java)
-//        val pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0 )
-        val pendingIntent = NavDeepLinkBuilder(context)
+        val pendingIntent = NavDeepLinkBuilder(mContext)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.nav_graph)
             .addDestination(R.id.movieDetailsFragment, bundle)
             .createPendingIntent()
 
         val builder = NotificationCompat.Builder(
-            context,
+            mContext,
             channel
         )
             .setSmallIcon(R.drawable.ic_notification_icon)
             .setContentTitle(title)
-            .setContentText(text)
+            .setContentText(mContext.getString(R.string.notification_text_remind))
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText(text)
+                    .bigText(mContext.getString(R.string.notification_text_remind))
             )
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
@@ -71,7 +117,7 @@ class AppNotification(private val mContext: Context) {
         mNotificationManager.notify(notificationId, notification)
     }
 
-    fun deleteNotification(context: Context, notificationId: Int) {
+    fun deleteNotification(notificationId: Int) {
         mNotificationManager.cancel(notificationId)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.androidschool.moviePaging.ui.popularMovies
 
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -21,6 +22,14 @@ class PopularMoviesViewModel @Inject constructor(
 
     private val _popularMovies = MutableLiveData<PagingData<Movie>>()
     var isMoviesLoaded = MutableLiveData<Boolean>(false)
+    private var searchResults = MutableLiveData<PagingData<Movie>>()
+    var searchQuery: String = savedStateHandle.get<String>("searchQuery").toString()
+    var searchQueryObservable = MutableLiveData<String>(searchQuery)
+
+    init {
+//        searchResult()
+//        Log.e("PopularMoviesViewModel", searchQuery)
+    }
 
     suspend fun getPopularMovies(): LiveData<PagingData<Movie>> {
         val response = repository.getPopularMoviesPaging().cachedIn(viewModelScope)
@@ -34,9 +43,16 @@ class PopularMoviesViewModel @Inject constructor(
 //            .cachedIn(viewModelScope)
 //    }
 
-    fun searchResult(query: String): Flow<PagingData<Movie>> {
-        return repository.getSearchResultPaging(query)
-            .cachedIn(viewModelScope)
+
+    fun setQuery(query: String) {
+        searchQueryObservable.postValue(query)
+        Log.e("searchViewModel", "query posted")
+    }
+
+    fun searchResult(): LiveData<PagingData<Movie>> {
+        val response = repository.getSearchResultPaging(searchQueryObservable.value!!).cachedIn(viewModelScope)
+        searchResults.value = response.value
+        return response
     }
 
     companion object {

@@ -1,6 +1,5 @@
-package com.example.androidschool.moviePaging.data.room
+package com.example.androidschool.moviePaging.data.room.alarms
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao

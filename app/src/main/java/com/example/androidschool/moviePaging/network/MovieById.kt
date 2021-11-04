@@ -1,6 +1,7 @@
 package com.example.androidschool.moviePaging.network
 
 
+import com.example.androidschool.moviePaging.network.videoresponse.VideoResponse
 import com.google.gson.annotations.SerializedName
 
 data class MovieById(
@@ -49,5 +50,36 @@ data class MovieById(
     @SerializedName("vote_average")
     val voteAverage: Double,
     @SerializedName("vote_count")
-    val voteCount: Int
-)
+    val voteCount: Int,
+    @SerializedName("videos")
+    val videos: VideoResponse,
+    val isEmpty: Boolean
+) {
+    constructor(): this(
+        adult = false,
+        backdropPath = "",
+        belongsToCollection = "null",
+        budget = -1,
+        genres = emptyList(),
+        homepage = "",
+        id = -1,
+        imdbId = "",
+        originalLanguage = "",
+        originalTitle = "",
+        overview = "",
+        popularity = -1.0,
+        posterPath = "",
+        productionCountries = emptyList(),
+        releaseDate = "",
+        revenue = -1,
+        runtime = -1,
+        status = "",
+        tagline = "",
+        title = "",
+        video = false,
+        voteAverage = -1.0,
+        voteCount = -1,
+        videos = VideoResponse(),
+        isEmpty = true
+    )
+}

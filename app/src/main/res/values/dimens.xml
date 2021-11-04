@@ -36,9 +36,12 @@
     <dimen name="title_bottom_margin">4dp</dimen>
     <dimen name="item_movie_img_width">90dp</dimen>
     <dimen name="item_movie_img_height">135dp</dimen>
-    <dimen name="start_fragment_section_movie_width">140dp</dimen>
-    <dimen name="start_fragment_section_movie_height">210dp</dimen>
+    <dimen name="start_fragment_section_movie_width">100dp</dimen>
+    <dimen name="start_fragment_section_movie_height">150dp</dimen>
     <dimen name="movie_img_corner_radius">8dp</dimen>
     <dimen name="movie_img_elevation">5dp</dimen>
     <dimen name="movie_img_detail_padding">6dp</dimen>
+    <dimen name="playback_button_dimens">50dp</dimen>
+    <dimen name="trending_item_width">380dp</dimen>
+    <dimen name="trending_item_height">210dp</dimen>
 </resources>

@@ -5,55 +5,48 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.example.androidschool.moviePaging.data.room.Alarm
-import com.example.androidschool.moviePaging.data.room.AlarmsDao
-import com.example.androidschool.moviePaging.data.room.AlarmsDatabase
+import androidx.compose.ui.res.stringResource
+import com.example.androidschool.moviePaging.R
+import com.example.androidschool.moviePaging.data.room.alarms.AlarmsDao
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AlarmReceiver: BroadcastReceiver() {
+class AlarmReceiver(): BroadcastReceiver() {
 
     @Inject
     lateinit var mAlarmsRoomDao: AlarmsDao
+    @Inject
+    lateinit var mAppNotification: AppNotification
 
     override fun onReceive(context: Context, intent: Intent) {
+        Log.e("receiver", context.toString())
         val movieId = intent.getStringExtra("MovieId")
         val movieTitle = intent.getStringExtra("MovieTitle")
-        val movieOverview = intent.getStringExtra("MovieOverview")
-//        Log.e(intent.action, intent.getStringExtra("MovieId") ?: "problem in id")
-//        Log.e(intent.action, intent.getStringExtra("MovieTitle") ?: "problem in title")
-//        Log.e(intent.action, intent.getStringExtra("MovieOverview") ?: "problem in overview")
 
         val bundle = Bundle()
         var movieIdInt: Int = 500
         var movieTitleString: String = "550"
-        var movieOverviewString: String = "555"
         if (!movieId.isNullOrBlank()) {
             movieIdInt = movieId.toInt()
         }
         if (!movieTitle.isNullOrBlank()) {
             movieTitleString = movieTitle
         }
-        if (!movieOverview.isNullOrBlank()) {
-            movieOverviewString = movieOverview
-        }
         bundle.putInt("MovieId", movieIdInt)
-        AppNotification(context).pushNotification(
-            context = context,
+        mAppNotification.pushNotification(
             channel = CHANNEL_1_ID,
             title = movieTitleString,
-            text = movieOverviewString,
             bundle = bundle,
             movieIdInt
         )
-
-//        val mAlarmsRoomDao = AlarmsDatabase.getInstance(context)!!.getAlarmsDao()
-        GlobalScope.launch(Dispatchers.IO) {
-            mAlarmsRoomDao.deleteAlarm(movieIdInt)
+        CoroutineScope(Dispatchers.Default).launch {
+            mAppNotification.deleteAlarm(movieIdInt)
         }
 
         var msg: String = intent.action ?: "action is null"

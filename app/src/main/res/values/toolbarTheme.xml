@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.ToolBar" parent="Theme.Doggo">
+
+        <!--Toolbar-->
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimary</item>
+        <item name="titleTextAppearance">@font/montserrat</item>
+
+    </style>
+
+    <style name="Theme.ToolBarFontFamily" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="Theme.ToolBarFontFamilyExpanded" parent="Theme.ToolBarFontFamily">
+        <item name="android:textSize">@dimen/app_text_extraExtraLarge</item>
+    </style>
+</resources>

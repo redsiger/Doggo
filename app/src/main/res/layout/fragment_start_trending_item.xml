@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardUseCompatPadding="true"
+        >
+
+        <ImageView
+            android:id="@+id/trending_item_background"
+            android:layout_width="@dimen/trending_item_width"
+            android:layout_height="@dimen/trending_item_height"
+
+            tools:background="@color/shimmer"
+            android:layout_gravity="center"/>
+
+        <View
+            android:id="@+id/trending_item_background_shade"
+            android:layout_width="@dimen/trending_item_width"
+            android:layout_height="@dimen/trending_item_height"
+            android:background="@drawable/movie_detail_poster_shade"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/trending_item_title"
+            style="@style/style_movie_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/app_margin_extraLarge"
+            android:layout_marginEnd="@dimen/app_margin_extraLarge"
+            android:layout_marginBottom="@dimen/app_margin_extraLarge"
+            android:textColor="@color/on_primary"
+            tools:text="Главный герой" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,54 +1,55 @@
 package com.example.androidschool.moviePaging.ui.popularMovies
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidschool.moviePaging.MainActivity
 import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.databinding.FragmentPopularMoviesBinding
-import com.example.androidschool.moviePaging.ui.MovieSearchResponseAdapter
+import com.example.androidschool.moviePaging.ui.search.MovieSearchResponsePagingAdapter
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class PopularMoviesFragment : Fragment() {
+class PopularMoviesFragment : Fragment(R.layout.fragment_popular_movies) {
 
     private var _binding: FragmentPopularMoviesBinding? = null
     private val mBinding get() = _binding!!
     private val mViewModel: PopularMoviesViewModel by viewModels()
-    lateinit var mAdapter: MovieSearchResponseAdapter
+    lateinit var mPagingAdapter: MovieSearchResponsePagingAdapter
     lateinit var mRecyclerView: RecyclerView
     lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
     lateinit var thisView: Fragment
+    @Inject lateinit var mPicasso: Picasso
 
+    lateinit var mNavController: NavController
+    lateinit var mToolbar: MaterialToolbar
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentPopularMoviesBinding.inflate(inflater, container,false)
-//        mViewModel = ViewModelProvider(this).get(PopularMoviesViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentPopularMoviesBinding.bind(view)
+        mToolbar = mBinding.mainToolbar
+        mToolbar.setTitleTextAppearance(requireContext(), R.style.style_toolbar_title)
+        mNavController = findNavController()
+        NavigationUI.setupWithNavController(mToolbar, mNavController)
 
         initialize()
         initPopularMoviesList()
-
-        thisView = this
-
-        Log.e("Tag", "onCreateView")
-        return (mBinding.root)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,29 +57,14 @@ class PopularMoviesFragment : Fragment() {
         Log.e("Tag", "onCreate")
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_menu, menu)
-        val menuItem = menu.findItem(R.menu.main_menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.app_bar_search -> {
-
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initialize() {
         mRecyclerView = mBinding.recyclerMovieList
-        mAdapter = MovieSearchResponseAdapter()
-
-        setHasOptionsMenu(true)
+//        mAdapter = StartFragmentPopularsAdapter(requireContext(), mPicasso)
+        mPagingAdapter = MovieSearchResponsePagingAdapter(mPicasso)
 
         mRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = mAdapter
+            layoutManager = GridLayoutManager(context, 3)
+            adapter = mPagingAdapter
         }
 
         mBinding.startFragmentMoviesRefresh.setOnRefreshListener {
@@ -105,7 +91,7 @@ class PopularMoviesFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
 //            delay(2000)
             mViewModel.getPopularMovies().observe(viewLifecycleOwner, {
-                mAdapter.submitData(lifecycle, it)
+                mPagingAdapter.submitData(lifecycle, it)
             })
         }
 
@@ -146,5 +132,4 @@ class PopularMoviesFragment : Fragment() {
         super.onAttach(context)
         Log.e("Tag", "onAttach")
     }
-
 }

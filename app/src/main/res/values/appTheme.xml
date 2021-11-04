@@ -11,5 +11,6 @@
 
         <!--Pickers-->
         <item name="shapeAppearanceMediumComponent">@style/PickersCorners</item>
+
     </style>
 </resources>

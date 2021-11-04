@@ -1,4 +1,4 @@
-package com.example.androidschool.moviePaging.ui
+package com.example.androidschool.moviePaging.ui.start
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

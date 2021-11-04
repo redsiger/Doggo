@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Theme.CollapsingToolbar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.CollapsingToolbar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="style_toolbar_title">
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:textAllCaps">true</item>
         <item name="android:textSize">@dimen/app_text_large</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -20,8 +22,19 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="style_movie_detail_subTitle_tertiary">
+        <item name="android:textColor">?android:textColorTertiary</item>
+        <item name="android:textSize">@dimen/app_text_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="style_plain_text">
         <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/app_text_normal</item>
+    </style>
+
+    <style name="style_plain_text_tertiary">
+        <item name="android:textColor">?android:textColorTertiary</item>
         <item name="android:textSize">@dimen/app_text_normal</item>
     </style>
 
@@ -48,7 +61,7 @@
     </style>
 
     <style name="style_tag_text">
-        <item name="android:textColor">@color/tag_color</item>
+        <item name="android:textColor">?android:textColorTertiary</item>
         <item name="android:textSize">@dimen/app_text_normal</item>
     </style>
 

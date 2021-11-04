@@ -1,6 +1,7 @@
 package com.example.androidschool.moviePaging.di
 
 import com.example.androidschool.moviePaging.data.MovieRepository
+import com.example.androidschool.moviePaging.data.room.cache.MovieSearchResponseDao
 import com.example.androidschool.moviePaging.data.utils.API_KEY
 import com.example.androidschool.moviePaging.data.utils.BASE_URL
 import com.example.androidschool.moviePaging.network.MovieService
@@ -22,9 +23,10 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideRepository(
-        movieService: MovieService
+        movieService: MovieService,
+        movieSearchResponseDao: MovieSearchResponseDao
     ): MovieRepository {
-        return MovieRepository(movieService)
+        return MovieRepository(movieService, movieSearchResponseDao)
     }
 
     @Singleton
@@ -65,6 +67,8 @@ object RetrofitModule {
                 .newBuilder()
                 .addQueryParameter("api_key", API_KEY)
                 .addQueryParameter("language", LANGUAGE)
+                .addQueryParameter("region", REGION)
+                .addQueryParameter("append_to_response", TRAILERS)
                 .build()
             val request = it.request()
                 .newBuilder()

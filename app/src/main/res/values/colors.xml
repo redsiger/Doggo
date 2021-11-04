@@ -14,11 +14,15 @@
 
     <color name="tag_color">#808080</color>
     <color name="colorRating">#fbce04</color>
+    <color name="colorRating5.0">#ff3333</color>
+    <color name="colorRating7.5">#fbce04</color>
+    <color name="colorRating10.0">#33cc33</color>
     <color name="lightBlack10">#1a1a1a</color>
     <color name="lightBlack20">#333333</color>
     <color name="lightBlack30">#4d4d4d</color>
     <color name="lightBlack40">#666666</color>
     <color name="lightBlack50">#808080</color>
+    <color name="shimmer">#cccccc</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

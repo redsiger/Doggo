@@ -1,4 +1,4 @@
-package com.example.androidschool.moviePaging.data.room
+package com.example.androidschool.moviePaging.data.room.alarms
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

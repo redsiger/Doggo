@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/start_screen_graph"
+    app:startDestination="@id/startFragment">
+
+    <include app:graph="@navigation/movie_detail_graph"/>
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.androidschool.moviePaging.ui.start.StartFragment"
+        android:label="@string/start_fragment_title"
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/action_startFragment_to_movieDetailsFragment"
+            app:destination="@id/movie_detail_graph">
+            <argument
+                android:name="movieId"
+                app:argType="integer"
+                app:nullable="false"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/popularMoviesFragment"
+        android:name="com.example.androidschool.moviePaging.ui.popularMovies.PopularMoviesFragment"
+        android:label="@string/popular_fragment_title"
+        tools:layout="@layout/fragment_popular_movies">
+        <action
+            android:id="@+id/action_popularMoviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movie_detail_graph"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_down"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.androidschool.moviePaging.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_movieDetailsFragment"
+            app:destination="@id/movie_detail_graph"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_down"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/topRatedFragment"
+        android:name="com.example.androidschool.moviePaging.ui.topRated.TopRatedFragment"
+        android:label="@string/top_rated_fragment_title"
+        tools:layout="@layout/fragment_top_rated">
+        <action
+            android:id="@+id/action_topRatedFragment_to_movie_detail_graph"
+            app:destination="@id/movie_detail_graph"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out_down" />
+    </fragment>
+
+</navigation>

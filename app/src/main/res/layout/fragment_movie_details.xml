@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
@@ -7,252 +7,288 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ProgressBar
+        android:id="@+id/movie_detail_fragment_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/movie_detail_fragment_refresh_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/movie_detail_fragment_background_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/movie_detail_fragment_background"
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/movie_detail_fragment_content_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_gravity="center">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/movie_detail_fragment_background_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:background="@drawable/ic_launcher_background" />
-
-                <View
-                    android:id="@+id/movie_detail_fragment_background_img_shade"
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    app:layout_constraintTop_toTopOf="@id/movie_detail_fragment_background_img"
-                    android:background="@drawable/movie_detail_poster_shade"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/movie_detail_fragment_title_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintBottom_toBottomOf="@id/movie_detail_fragment_background_img"
-                    android:paddingStart="@dimen/app_padding_extraLarge"
-                    android:paddingEnd="@dimen/app_padding_extraLarge">
-
-                    <TextView
-                        android:id="@+id/movie_detail_fragment_title"
-                        style="@style/style_movie_title"
-                        android:layout_width="0dp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/app_margin_small"
-                        android:textColor="@color/on_primary"
-                        app:layout_constraintBottom_toTopOf="@id/movie_detail_fragment_release_date"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0"
-                        tools:text="Главный герой" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
 
-                    <TextView
-                        android:id="@+id/movie_detail_fragment_release_date"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        tools:text="2020"
-                        style="@style/style_plain_text"
-                        android:textColor="@color/on_primary"
-                        android:layout_marginBottom="@dimen/app_padding_large"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0"/>
+                        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                            android:id="@+id/movie_detail_fragment_background_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/movie_detail_fragment_background"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_gravity="center">
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/app_margin_extraLarge"
-                    android:drawableStart="@drawable/ic_rating"
-                    android:drawablePadding="@dimen/app_padding_small"
-                    android:text="@string/movie_detail_rating"
-                    tools:text="8.2"
-                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_title_container"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0"
-                    style="@style/style_movie_rating_onSurface"/>
+                                <ImageView
+                                    android:id="@+id/movie_detail_fragment_background_img"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="220dp"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:background="@drawable/ic_launcher_background" />
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_rating_count"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    tools:text="by 75362"
-                    android:gravity="start"
-                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_rating"
-                    app:layout_constraintStart_toStartOf="@id/movie_detail_fragment_rating"
-                    app:layout_constraintEnd_toEndOf="@id/movie_detail_fragment_rating"
-                    app:layout_constraintHorizontal_bias="0"
-                    style="@style/style_movie_rating_by"/>
+                                <View
+                                    android:id="@+id/movie_detail_fragment_background_img_shade"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="220dp"
+                                    app:layout_constraintTop_toTopOf="@id/movie_detail_fragment_background_img"
+                                    android:background="@drawable/movie_detail_poster_shade"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                                <View
+                                    android:id="@+id/movie_detail_fragment_background_playback"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="@id/movie_detail_fragment_background_img"
+                                    app:layout_constraintBottom_toBottomOf="@id/movie_detail_fragment_background_img"
+                                    app:layout_constraintStart_toStartOf="@id/movie_detail_fragment_background_img"
+                                    app:layout_constraintEnd_toEndOf="@id/movie_detail_fragment_background_img"
+                                    android:background="@drawable/movie_detail_poster_playback"
+                                    tools:visibility="gone"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/movie_detail_fragment_button_reminder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/app_text_extraLarge"
-                android:src="@drawable/ic_notification"
-                app:layout_anchor="@id/movie_detail_fragment_title_container"
-                app:layout_anchorGravity="bottom|end"
-                />
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/movie_detail_fragment_title_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    app:layout_constraintBottom_toBottomOf="@id/movie_detail_fragment_background_img"
+                                    android:paddingStart="@dimen/app_padding_extraLarge"
+                                    android:paddingEnd="@dimen/app_padding_extraLarge">
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                                    <TextView
+                                        android:id="@+id/movie_detail_fragment_title"
+                                        style="@style/style_movie_title"
+                                        android:textColor="@color/on_primary"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginBottom="@dimen/app_margin_small"
+                                        app:layout_constraintBottom_toTopOf="@id/movie_detail_fragment_release_date"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintHorizontal_bias="0"
+                                        tools:text="Venom 2" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/movie_detail_fragment_main_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_background_container">
+                                    <TextView
+                                        android:id="@+id/movie_detail_fragment_release_date"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        tools:text="2020"
+                                        style="@style/style_plain_text"
+                                        android:textColor="@color/on_primary"
+                                        android:layout_marginBottom="@dimen/app_padding_large"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintHorizontal_bias="0"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/movie_detail_fragment_about_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/app_margin_large"
-                android:paddingStart="@dimen/app_padding_extraLarge"
-                android:paddingEnd="@dimen/app_padding_extraLarge"
-                app:layout_constraintTop_toTopOf="parent">
+                                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_about_title"
-                    android:text="@string/movie_detail_about_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/style_movie_detail_subTitle"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_rating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/app_margin_extraLarge"
+                                    android:drawableStart="@drawable/ic_rating"
+                                    android:drawablePadding="@dimen/app_padding_small"
+                                    android:text="@string/movie_detail_rating"
+                                    tools:text="8.2"
+                                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_title_container"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0"
+                                    style="@style/style_movie_rating_onSurface"/>
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_about_genres_title"
-                    android:text="@string/movie_detail_genres_title"
-                    style="@style/style_tag_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/app_margin_small"
-                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_title"
-                    app:layout_constraintStart_toStartOf="parent" />
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_rating_count"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    tools:text="by 75362"
+                                    android:gravity="start"
+                                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_rating"
+                                    app:layout_constraintStart_toStartOf="@id/movie_detail_fragment_rating"
+                                    app:layout_constraintEnd_toEndOf="@id/movie_detail_fragment_rating"
+                                    app:layout_constraintHorizontal_bias="0"
+                                    style="@style/style_movie_rating_by"/>
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_about_genres"
-                    style="@style/style_plain_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:lines="1"
-                    android:ellipsize="end"
-                    app:layout_constraintStart_toStartOf="@id/movie_detail_fragment_about_genres_title"
-                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_genres_title"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_about_countries_title"
-                    android:text="@string/movie_detail_countries_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/app_margin_extraSmall"
-                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_genres"
-                    app:layout_constraintStart_toStartOf="parent"
-                    style="@style/style_tag_text"/>
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/movie_detail_fragment_button_reminder"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/app_text_extraLarge"
+                                android:src="@drawable/ic_notification"
+                                app:layout_anchor="@id/movie_detail_fragment_title_container"
+                                app:layout_anchorGravity="bottom|end"
+                                />
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_about_countries"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:lines="1"
-                    android:ellipsize="end"
-                    app:layout_constraintStart_toStartOf="@id/movie_detail_fragment_about_countries_title"
-                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_countries_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    style="@style/style_plain_text" />
+                        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/movie_detail_fragment_main_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_background_container">
 
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/movie_detail_fragment_about_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/app_margin_large"
+                                android:paddingStart="@dimen/app_padding_extraLarge"
+                                android:paddingEnd="@dimen/app_padding_extraLarge"
+                                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/movie_detail_fragment_overview_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/app_margin_large"
-                android:paddingStart="@dimen/app_padding_extraLarge"
-                android:paddingEnd="@dimen/app_padding_extraLarge"
-                app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_container">
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_about_title"
+                                    android:text="@string/movie_detail_about_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    style="@style/style_movie_detail_subTitle"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_overview_title"
-                    android:text="@string/movie_detail_overview_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    style="@style/style_movie_detail_subTitle" />
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_about_genres_title"
+                                    android:text="@string/movie_detail_genres_title"
+                                    style="@style/style_tag_text"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/app_margin_small"
+                                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_title"
+                                    app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_overview_body"
-                    tools:text="some desc"
-                    android:justificationMode="inter_word"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/app_margin_small"
-                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_overview_title"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0"
-                    style="@style/style_plain_text"
-                    android:clickable="true" />
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_about_genres"
+                                    style="@style/style_plain_text"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:lines="1"
+                                    android:ellipsize="end"
+                                    app:layout_constraintStart_toStartOf="@id/movie_detail_fragment_about_genres_title"
+                                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_genres_title"
+                                    app:layout_constraintEnd_toEndOf="parent"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_about_countries_title"
+                                    android:text="@string/movie_detail_countries_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/app_margin_extraSmall"
+                                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_genres"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    style="@style/style_tag_text"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/movie_detail_fragment_cast_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/app_margin_large"
-                app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_overview_container">
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_about_countries"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:lines="1"
+                                    android:ellipsize="end"
+                                    app:layout_constraintStart_toStartOf="@id/movie_detail_fragment_about_countries_title"
+                                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_countries_title"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    style="@style/style_plain_text" />
 
-                <TextView
-                    android:id="@+id/movie_detail_fragment_cast_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/app_margin_extraLarge"
-                    android:layout_marginEnd="@dimen/app_margin_extraLarge"
-                    android:text="@string/movie_detail_cast_title"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    style="@style/style_movie_detail_subTitle" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/movie_detail_fragment_cast_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/app_margin_extraLarge"
-                    android:paddingStart="@dimen/app_padding_small"
-                    android:paddingEnd="@dimen/app_padding_small"
-                    android:clipToPadding="false"
-                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_cast_title"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/movie_detail_fragment_overview_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/app_margin_large"
+                                android:paddingStart="@dimen/app_padding_extraLarge"
+                                android:paddingEnd="@dimen/app_padding_extraLarge"
+                                app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_about_container">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_overview_title"
+                                    android:text="@string/movie_detail_overview_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    style="@style/style_movie_detail_subTitle" />
 
-</ScrollView>
+                                <com.example.androidschool.moviePaging.util.CustomViews.ExpandableTextView.ExpandableTextView
+                                    android:id="@+id/movie_detail_fragment_overview_body"
+                                    tools:text="some desc"
+                                    android:justificationMode="inter_word"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/app_margin_small"
+                                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_overview_title"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0"
+                                    style="@style/style_plain_text"
+                                    android:clickable="true" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/movie_detail_fragment_cast_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/app_margin_large"
+                                app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_overview_container">
+
+                                <TextView
+                                    android:id="@+id/movie_detail_fragment_cast_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/app_margin_extraLarge"
+                                    android:layout_marginEnd="@dimen/app_margin_extraLarge"
+                                    android:text="@string/movie_detail_cast_title"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    style="@style/style_movie_detail_subTitle" />
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/movie_detail_fragment_cast_recycler"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/app_margin_extraLarge"
+                                    android:paddingStart="@dimen/app_padding_small"
+                                    android:paddingEnd="@dimen/app_padding_small"
+                                    android:clipToPadding="false"
+                                    app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_cast_title"/>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

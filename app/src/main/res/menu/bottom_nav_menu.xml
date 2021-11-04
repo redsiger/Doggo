@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:icon="@drawable/ic_popular_movies"
-        android:id="@+id/popularMoviesFragment"
-        android:title="@string/popular_movies_title"/>
+        android:icon="@drawable/ic_main_fragment"
+        android:id="@+id/start_screen_graph"
+        android:title="@string/main_fragment_title"/>
 
     <item
         android:icon="@drawable/ic_search_movies"
-        android:id="@+id/testFragment"
+        android:id="@+id/search_graph"
         android:title="@string/search_movies_title"/>
 
     <item
         android:icon="@drawable/ic_alarms"
-        android:id="@+id/alarmsFragment"
+        android:id="@+id/alarms_graph"
         android:title="@string/alarms_fragment_title"/>
 
 </menu>

@@ -25,7 +25,7 @@ class MoviePagingSource(
 
         val response = movieService.getPopularMovies(page)
 //        val response = movieService.getSearchResult(query, page)
-        return if (response.isSuccessful) {
+        return if (response!!.isSuccessful) {
             val movies : List<Movie> = checkNotNull(response.body()).results
             val nextKey = if (params.key == response.body()?.totalPages) null else page+1
             val prevKey = if (page == 1) null else page-1

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="?dialogPreferredPadding"
+    android:paddingEnd="?dialogPreferredPadding"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/alarm_dialog_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/app_padding_medium"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/alarm_dialog_time_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/app_padding_medium"
+            android:paddingBottom="@dimen/app_padding_medium">
+
+            <TextView
+                android:id="@+id/alarm_dialog_time_title"
+                style="@style/style_movie_detail_subTitle_tertiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/alarm_dialog_time_value"
+                android:padding="@dimen/app_padding_small"
+                android:text="@string/alarm_dialog_time_title" />
+
+            <TextView
+                android:id="@+id/alarm_dialog_time_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/app_padding_small"
+                style="@style/style_movie_detail_subTitle"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/alarm_dialog_date_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/app_padding_medium"
+            android:paddingBottom="@dimen/app_padding_medium">
+
+            <TextView
+                android:id="@+id/alarm_dialog_date_title"
+                style="@style/style_movie_detail_subTitle_tertiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/alarm_dialog_date_value"
+                android:padding="@dimen/app_padding_small"
+                android:text="@string/alarm_dialog_date_title" />
+
+            <TextView
+                android:id="@+id/alarm_dialog_date_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/app_padding_small"
+                style="@style/style_movie_detail_subTitle"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,35 +1,37 @@
 package com.example.androidschool.moviePaging.ui.movieDetail
 
+import android.app.ActionBar
 import android.app.PendingIntent
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.androidschool.moviePaging.R
-import com.example.androidschool.moviePaging.data.room.Alarm
-import com.example.androidschool.moviePaging.data.room.AlarmsDao
-import com.example.androidschool.moviePaging.data.room.AlarmsDatabase
 import com.example.androidschool.moviePaging.data.utils.TMDB_IMG_URL
-import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailsBinding
+import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailBinding
 import com.example.androidschool.moviePaging.network.Credits.CastMember
 import com.example.androidschool.moviePaging.network.MovieById
 import com.example.androidschool.moviePaging.notifications.AlarmReceiver
 import com.example.androidschool.moviePaging.notifications.AppNotification
-import com.example.androidschool.moviePaging.notifications.CHANNEL_1_ID
-import com.example.androidschool.moviePaging.notifications.TimePickerFragment
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
+import com.example.androidschool.moviePaging.util.Result.Status
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -39,53 +41,71 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MovieDetailsFragment(): Fragment() {
+class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
 
-    private var _binding: FragmentMovieDetailsBinding? = null
+    private var _binding: FragmentMovieDetailBinding? = null
     private val mBinding get() = _binding!!
     private val mViewModel: MovieDetailsViewModel by viewModels<MovieDetailsViewModel>()
+    private val args by navArgs<MovieDetailsFragmentArgs>()
+    private val movieId by lazy {
+        args.movieId
+    }
 
-    lateinit var mMovieByIdObserver: Observer<MovieById>
+
     lateinit var mMovieById: MovieById
-    lateinit var mIsMoviesLoadedObserver: Observer<Boolean>
-    lateinit var mMovieCastObserver: Observer<List<CastMember>>
-    lateinit var mMovieCast: List<CastMember>
     lateinit var mCastAdapter: MovieDetailsCastAdapter
+    lateinit var mActionBar: ActionBar
+
+    lateinit var movieStateObserver: Observer<Status<MovieById>>
+    lateinit var castStateObserver: Observer<Status<List<CastMember>>>
 
     @Inject
-    lateinit var mDatePicker: MaterialDatePicker<Long>
+    lateinit var mDatePicker: MaterialDatePicker.Builder<Long>
     @Inject
+    lateinit var mTimePickerBuilder: MaterialTimePicker.Builder
     lateinit var mTimePicker: MaterialTimePicker
     @Inject
     lateinit var mDateAndTime: Calendar
-    lateinit var mAppNotification: AppNotification
-
     @Inject
-    lateinit var mAlarmsRoomDao: AlarmsDao
+    lateinit var mAppNotification: AppNotification
+    @Inject
+    lateinit var mPicasso: Picasso
+    var mGenres = String()
+    lateinit var genresObserver: Observer<String>
+    var mCountries = String()
+    lateinit var countriesObserver: Observer<String>
+
+    lateinit var mNavController: NavController
+    lateinit var mToolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mAppNotification = AppNotification(requireContext())
-//        mAlarmsRoomDao = AlarmsDatabase.getInstance(requireContext())!!.getAlarmsDao()
+        mTimePicker = mTimePickerBuilder.build()
+        mViewModel.getMovieById(movieId)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentMovieDetailBinding.bind(view)
 
-        initMovieById()
-        initNotificationCreateClickListener()
+        mToolbar = mBinding.movieDetailsToolbar
+        mToolbar.setTitleTextAppearance(requireContext(), R.style.style_toolbar_title)
+        mBinding.movieDetailsToolbarCol.setCollapsedTitleTextAppearance(R.style.Theme_ToolBarFontFamily)
+        mBinding.movieDetailsToolbarCol.setExpandedTitleTextAppearance(R.style.Theme_ToolBarFontFamilyExpanded)
+        mNavController = findNavController()
+        NavigationUI.setupWithNavController(mToolbar, mNavController)
+
+//        initMovieById()
+        initObservers()
+        initRefresh()
         initNotificationDeleteClickListener()
         initCastSection()
         initTimePicker()
         initDatePicker(mTimePicker)
-
-        return mBinding.root
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initTimePicker() {
         mTimePicker.addOnPositiveButtonClickListener {
             mDateAndTime.set(Calendar.MILLISECOND, 0)
@@ -94,45 +114,33 @@ class MovieDetailsFragment(): Fragment() {
             mDateAndTime.set(Calendar.HOUR_OF_DAY, mTimePicker.hour)
             Log.e("DATE PICKER", mDateAndTime.toString())
 
-            var pickedDateAndTime: String = mDateAndTime.get(Calendar.YEAR).toString()
-            pickedDateAndTime += "-"
-            val pickedMonth = (mDateAndTime.get(Calendar.MONTH) + 1) % 12
-            pickedDateAndTime += pickedMonth.toString()
-            pickedDateAndTime += "-"
-            pickedDateAndTime += mDateAndTime.get(Calendar.DAY_OF_MONTH).toString()
-            pickedDateAndTime += " "
-            pickedDateAndTime += mDateAndTime.get(Calendar.HOUR_OF_DAY).toString()
-            pickedDateAndTime += ":"
-            pickedDateAndTime += mDateAndTime.get(Calendar.MINUTE).toString()
-
-            val intent = Intent(requireContext(), AlarmReceiver::class.java)
-//            intent.action = mMovieById.title
-            intent.action = "PUSH_NOTIFICATION " + mMovieById.title
-
-            intent.putExtra("MovieId", mMovieById.id.toString())
-            intent.putExtra("MovieTitle", mMovieById.title)
-            intent.putExtra("MovieOverview", mMovieById.overview)
-
-            val pendingIntent = PendingIntent.getBroadcast(requireContext(), 0, intent, 0)
-            mAppNotification.createAlarm(pendingIntent, mDateAndTime.timeInMillis)
-
-            lifecycleScope.launch(Dispatchers.IO) {
-                val alarm: Alarm = Alarm(
+            lifecycleScope.launch(Dispatchers.Default) {
+                mAppNotification.createNotificationAndAlarm(
                     mMovieById.id,
                     mMovieById.title,
                     mDateAndTime.timeInMillis
                 )
-                mAlarmsRoomDao.addAlarm(alarm)
             }
 
             val dateFormatter = SimpleDateFormat("HH:mm dd-MMMM-yyyy")
             val reminderTime: String = getString(R.string.reminder_is_set, dateFormatter.format(mDateAndTime.time))
-            Snackbar.make(mBinding.movieDetailFragmentCastRecycler, reminderTime, Snackbar.LENGTH_SHORT).show()
+            val snackbar = Snackbar.make(mBinding.root, reminderTime, Snackbar.LENGTH_SHORT)
+
+            snackbar.setAction(R.string.cancel, View.OnClickListener {
+                lifecycleScope.launch(Dispatchers.Default) {
+                    mAppNotification.deleteNotificationAndAlarm(
+                        mMovieById.id,
+                        mMovieById.title
+                    )
+                }
+            })
+            snackbar.show()
         }
     }
 
     private fun initDatePicker(timePicker: MaterialTimePicker) {
-        mDatePicker.addOnPositiveButtonClickListener {
+        val picker = mDatePicker.build()
+        picker.addOnPositiveButtonClickListener {
             val pickedDate = Calendar.getInstance(TimeZone.getTimeZone("Moscow"))
             pickedDate.time = Date(it)
             mDateAndTime.timeInMillis = it
@@ -141,107 +149,171 @@ class MovieDetailsFragment(): Fragment() {
         }
 
         val showPickerClickListener = View.OnClickListener {
-            mDatePicker.show(childFragmentManager, "datePicker")
+            picker.show(childFragmentManager, "datePicker")
         }
 
         mBinding.movieDetailFragmentButtonReminder.setOnClickListener(showPickerClickListener)
     }
 
-    private fun initNotificationCreateClickListener() {
-        val createNotificationClickListener = View.OnClickListener {
-            val context = requireContext()
-            val bundle = Bundle()
-            bundle.putInt("MovieId", mMovieById.id)
-            mAppNotification.pushNotification(
-                context,
-                CHANNEL_1_ID,
-                mMovieById.title,
-                mMovieById.overview,
-                bundle,
-                mMovieById.id
-            )
+    private fun initShowTrailerClickListener(id: String) {
+        val showTrailerClickListener = View.OnClickListener {
+            val appSrc: String = "vnd.youtube:" + id
+            val webSrc: String = "http://www.youtube.com/watch?v=" + id
+            val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse(appSrc))
+            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse(webSrc))
+
+            try {
+                requireContext().startActivity(appIntent)
+            } catch (e: ActivityNotFoundException) {
+                requireContext().startActivity(webIntent)
+            }
         }
-        mBinding.movieDetailFragmentTitle.setOnClickListener(createNotificationClickListener)
+
+        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(showTrailerClickListener)
     }
 
     private fun initNotificationDeleteClickListener() {
         val deleteNotificationClickListener = View.OnClickListener {
             val context = requireContext()
-            mAppNotification.deleteNotification(context,mMovieById.id)
+            mAppNotification.deleteNotification(mMovieById.id)
         }
         mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(deleteNotificationClickListener)
     }
 
-    private fun initMovieById() {
-        mMovieByIdObserver = Observer { movie ->
-            mMovieById = movie
-            val genresList = movie.genres
-            val countriesList = movie.productionCountries
-            with(mBinding) {
-                movieDetailFragmentTitle.text = movie.title
-                movieDetailFragmentOverviewBody.text = movie.overview
-                movieDetailFragmentReleaseDate.text = movie.releaseDate.substring(0, 4)
-
-                var genresString: String = "-"
-                if (genresList.isNotEmpty()) {
-                    genresString = ""
-                    genresList.forEach { genre ->
-                        if (genre != genresList.last()) {
-                            genresString = genresString + genre.name + ", "
-                        } else {
-                            genresString += genre.name
-                        }
+    private fun initObservers() {
+        movieStateObserver = Observer { state ->
+            when (state) {
+                is Status.Success -> {
+                    hideLoading()
+                    showContent()
+                    state.data.let {
+                        mMovieById = it
+                        renderPage(it, mGenres, mCountries)
                     }
                 }
-                movieDetailFragmentAboutGenres.text = genresString
-
-                var countriesString: String = "-"
-                if (countriesList.isNotEmpty()) {
-                    countriesString = ""
-                    countriesList.forEach { country ->
-                        if (country != countriesList.last()) {
-                            countriesString = countriesString + country.name + ", "
-                        } else {
-                            countriesString += country.name
-                        }
-                    }
+                is Status.InProgress -> {
+                    showLoading()
+                    hideContent()
                 }
-
-                movieDetailFragmentAboutCountries.text = countriesString
-//                movieDetailFragmentRating.text = getString(R.string.movie_detail_rating, movie.voteAverage.toString())
-                movieDetailFragmentRating.text = movie.voteAverage.toString()
-                movieDetailFragmentRatingCount.text = getString(R.string.movie_detail_rating, movie.voteCount.toString())
-
-                if (movie.backdropPath != null) {
-                    Picasso.get()
-                        .load(TMDB_IMG_URL + movie.backdropPath)
-                        .centerCrop()
-                        .fit()
-                        .into(movieDetailFragmentBackgroundImg)
+                is Status.Error -> {
+                    val error = state.exception.toString()
+                    Snackbar.make(mBinding.root, error, Snackbar.LENGTH_SHORT).show()
+                    hideLoading()
+                    hideContent()
                 }
             }
         }
-        mViewModel.movieById.observe(viewLifecycleOwner, mMovieByIdObserver)
+        mViewModel.movieState.observe(viewLifecycleOwner, movieStateObserver)
+
+        castStateObserver = Observer { state ->
+            when (state) {
+                is Status.Success -> {
+                    hideLoading()
+                    showContent()
+                    mCastAdapter.setList(state.data)
+                }
+                is Status.InProgress -> {
+                    showLoading()
+                    hideContent()
+                }
+                is Status.Error -> {
+                    val error = state.exception.toString()
+                    Snackbar.make(mBinding.root, error, Snackbar.LENGTH_SHORT).show()
+                    hideLoading()
+                    hideContent()
+                }
+            }
+        }
+        mViewModel.castState.observe(viewLifecycleOwner, castStateObserver)
+
+        genresObserver = Observer { genres ->
+            mGenres = genres
+        }
+        mViewModel.genres.observe(viewLifecycleOwner, genresObserver)
+
+        countriesObserver = Observer { countries ->
+            mCountries = countries
+        }
+        mViewModel.countries.observe(viewLifecycleOwner, countriesObserver)
     }
 
-    private fun initCastSection() {
-        mCastAdapter = MovieDetailsCastAdapter(requireContext())
-        mBinding.movieDetailFragmentCastRecycler.adapter = mCastAdapter
-
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        mBinding.movieDetailFragmentCastRecycler.layoutManager = layoutManager
-
-        mMovieCastObserver = Observer {
-            mCastAdapter.setList(it)
+    private fun renderPage(movie: MovieById, genres: String, counties: String) {
+        with(mBinding) {
+            if (movie.backdropPath != "null") {
+                mPicasso
+                    .load(TMDB_IMG_URL + movie.backdropPath)
+                    .centerCrop()
+                    .fit()
+                    .into(movieDetailFragmentBackgroundImg)
+            }
+//            movieDetailFragmentReleaseDate.text =
+//                if (movie.releaseDate.length > 4) movie.releaseDate.substring(0, 4)
+//                else movie.releaseDate
+            movieDetailsToolbarCol.title = movie.title
         }
 
-        mViewModel.movieByIdCredits.observe(viewLifecycleOwner, mMovieCastObserver)
+        with(mBinding.fragmentMovieDetailScrolling) {
+            movieDetailFragmentOverviewBody.text = movie.overview
+            movieDetailFragmentAboutGenres.text = genres
+            movieDetailFragmentAboutCountries.text = counties
+            movieDetailFragmentRating.text = movie.voteAverage.toString()
+            movieDetailFragmentRatingCount.text = getString(R.string.movie_detail_rating, movie.voteCount.toString())
+
+//            if (!movie.videos.results.isEmpty()) {
+//                initShowTrailerClickListener(movie.videos.results[0].key)
+//            } else {
+//                mBinding.movieDetailFragmentBackgroundPlayback.visibility = View.GONE
+//            }
+        }
     }
 
+    private fun hideLoading() {
+        mBinding.movieDetailFragmentProgressBar.visibility = View.GONE
+    }
+    private fun hideContent() {
+        mBinding.movieDetailsContentContainer.visibility = View.GONE
+    }
+    private fun showLoading() {
+        mBinding.movieDetailFragmentProgressBar.visibility = View.VISIBLE
+    }
+    private fun showContent() {
+        mBinding.movieDetailsContentContainer.visibility = View.VISIBLE
+    }
+    private fun showRefresh() {
+        mBinding.movieDetailFragmentRefreshContainer.isRefreshing = true
+    }
+    private fun hideRefresh() {
+        mBinding.movieDetailFragmentRefreshContainer.isRefreshing = false
+    }
+
+
+    private fun initCastSection() {
+        mCastAdapter = MovieDetailsCastAdapter(requireContext(), mPicasso)
+        mBinding.fragmentMovieDetailScrolling.movieDetailFragmentCastRecycler.adapter = mCastAdapter
+
+//        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(requireContext(), 3)
+        mBinding.fragmentMovieDetailScrolling.movieDetailFragmentCastRecycler.layoutManager = layoutManager
+
+        mBinding.fragmentMovieDetailScrolling.movieDetailFragmentCastRecycler.isNestedScrollingEnabled = false
+    }
+
+    private fun initRefresh() {
+        mBinding.movieDetailFragmentRefreshContainer.setOnRefreshListener {
+            refreshFragment()
+        }
+    }
+
+    private fun refreshFragment() {
+        mViewModel.getMovieById(movieId)
+        Snackbar.make(mBinding.movieDetailFragmentRefreshContainer, R.string.fragment_updated, Snackbar.LENGTH_SHORT).show()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mViewModel.movieById.removeObserver(mMovieByIdObserver)
-        mViewModel.movieByIdCredits.removeObserver(mMovieCastObserver)
+        mViewModel.movieState.removeObserver(movieStateObserver)
+        mViewModel.castState.removeObserver(castStateObserver)
     }
 }
+
+

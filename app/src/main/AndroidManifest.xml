@@ -38,6 +38,7 @@
             </intent-filter>
         </activity>
 
+        <!--AlarmReceiver-->
         <receiver
             android:name=".notifications.AlarmReceiver"
             android:enabled="true"

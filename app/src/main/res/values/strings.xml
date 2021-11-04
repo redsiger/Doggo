@@ -16,10 +16,22 @@
     <string name="button_remind_me_later">remind me later</string>
     <string name="start_fragment_title">MovieDatabase</string>
     <string name="popular_fragment_title">Popular</string>
-    <string name="datePicker">Select date</string>
     <string name="timePicker">Select time</string>
-    <string name="movie_detail_rating" translatable="false">by %1$s</string>
-    <string name="fragment_updated">Updated</string>
+    <string name="datePicker">Select date</string>
+    <string name="movie_detail_rating" translatable="false">%1$s votes</string>
+    <string name="fragment_updated">Updating…</string>
     <string name="reminder_is_set">Reminder is set on %1$s</string>
+    <string name="reminder_is_delete">%1$s. Reminder is delete</string>
     <string name="alarms_fragment_title">Alarms</string>
+    <string name="main_fragment_title">Main</string>
+    <string name="top_rated_fragment_title">Top rated</string>
+    <string name="top_rated_movies_title">Top rated</string>
+    <string name="cancel">@android:string/cancel</string>
+    <string name="trending_title">Trending</string>
+    <string name="load_more_btn_title">Load more</string>
+    <string name="alarm_dialog_title">Change date and time</string>
+    <string name="save">Save</string>
+    <string name="alarm_dialog_date_title">Date</string>
+    <string name="alarm_dialog_time_title">Time</string>
+    <string name="notification_text_remind">You wanted to see this movie</string>
 </resources>

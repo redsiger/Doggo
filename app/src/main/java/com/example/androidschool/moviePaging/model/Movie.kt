@@ -1,14 +1,22 @@
 package com.example.androidschool.moviePaging.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 
+@TypeConverters(GenreIdsConverter::class)
+@Entity(tableName = "movies")
 data class Movie(
+    var section: String,
+    var movieSearchResponsePage: Int,
     @SerializedName("adult")
     val adult: Boolean,
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("genre_ids")
     val genreIds: List<Int>,
+    @PrimaryKey
     @SerializedName("id")
     val id: Int,
     @SerializedName("original_language")

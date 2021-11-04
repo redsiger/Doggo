@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/fragment_start_trending_shimmer"
+        android:id="@+id/start_fragment_shimmer_container_child_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/app_padding_medium"
+        android:paddingEnd="@dimen/app_padding_medium"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <include layout="@layout/fragment_start_section_shimmer"
+        android:id="@+id/start_fragment_shimmer_container_child_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/app_padding_large"
+        app:layout_constraintTop_toBottomOf="@id/start_fragment_shimmer_container_child_1"
+        />
+
+
+    <include layout="@layout/fragment_start_section_shimmer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/app_padding_large"
+        app:layout_constraintTop_toBottomOf="@id/start_fragment_shimmer_container_child_2"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

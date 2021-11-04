@@ -18,7 +18,20 @@
     <string name="popular_fragment_title">Популярное</string>
     <string name="timePicker">Выберите время</string>
     <string name="datePicker">Выберите дату</string>
-    <string name="fragment_updated">Обновлено</string>
+    <string name="movie_detail_rating" translatable="false">%1$s голосов</string>
+    <string name="fragment_updated">Обновление…</string>
     <string name="reminder_is_set">Напоминание установлено на %1$s</string>
+    <string name="reminder_is_delete">%1$s. напоминание удалено</string>
     <string name="alarms_fragment_title">Будильники</string>
+    <string name="main_fragment_title">Главная</string>
+    <string name="top_rated_movies_title">Топ</string>
+    <string name="cancel">отмена</string>
+    <string name="trending_title">В тренде</string>
+    <string name="load_more_btn_title">Загрузить еще</string>
+    <string name="alarm_dialog_title">Измените время и дату</string>
+    <string name="save">Сохранить</string>
+    <string name="alarm_dialog_date_title">Дата</string>
+    <string name="alarm_dialog_time_title">Время</string>
+    <string name="notification_text_remind">Вы хотели посмотреть этот фильм</string>
+    <string name="top_rated_fragment_title">Топ</string>
 </resources>
