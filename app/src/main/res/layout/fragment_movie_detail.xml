@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ProgressBar
+        android:id="@+id/movie_detail_fragment_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/movie_details_content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/movie_details_appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            android:theme="@style/Theme.CollapsingToolbar.AppBarOverlay">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/movie_details_toolbar_col"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@id/movie_details_toolbar"
+                app:titleCollapseMode="scale"
+                style="@style/Theme.ToolBar"
+                app:maxLines="2"
+                tools:title="Venom 2"
+                >
+
+                <ImageView
+                    android:id="@+id/movie_detail_fragment_background_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    app:layout_collapseMode="parallax"
+                    tools:src="@drawable/ic_launcher_background"
+                    android:scaleType="centerCrop"
+                    />
+
+                <View
+                    android:id="@+id/movie_detail_fragment_background_img_shade"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    app:layout_constraintTop_toTopOf="@id/movie_detail_fragment_background_img"
+                    android:background="@drawable/movie_detail_poster_shade"/>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/movie_details_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/Theme.CollapsingToolbar.PopupOverlay"
+                    />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/movie_detail_fragment_button_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/app_text_extraLarge"
+            android:src="@drawable/ic_notification"
+            app:layout_anchor="@id/movie_details_appBar"
+            app:layout_anchorGravity="bottom|end"
+            />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/movieDetailFragmentRefreshContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include layout="@layout/fragment_movie_detail_content_scrolling"
+                android:id="@+id/fragment_movie_detail_scrolling"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</FrameLayout>
