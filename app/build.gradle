@@ -78,8 +78,8 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picasso_version"
 
     //Shimmer
-    def shimmer_version = "0.5.0"
-    implementation "com.facebook.shimmer:shimmer:$shimmer_version"
+//    def shimmer_version = "0.5.0"
+//    implementation "com.facebook.shimmer:shimmer:$shimmer_version"
 
 
     // ViewModel

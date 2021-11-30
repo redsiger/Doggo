@@ -28,7 +28,7 @@ class TopRatedViewModel @Inject constructor (
         if (currentPage == 1) {
             topRatedState.postValue(Status.InProgress)
         }
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             val response = movieRepository.getTopRatedMovies(currentPage)
             when (response) {
                 is Status.Success -> {

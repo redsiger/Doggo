@@ -7,6 +7,8 @@
     <color name="ripple_material_dark">#33ffffff</color>
     <color name="ripple_material_light">#1f000000</color>
 
+    <color name="transparent">@android:color/transparent</color>
+
     <color name="secondary">#fcd734</color>
     <color name="secondary_light">#ffff6b</color>
     <color name="secondary_dark">#c5a600</color>

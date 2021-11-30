@@ -6,14 +6,13 @@
     <string name="try_again">Try again</string>
     <string name="popular_movies_title">Popular</string>
     <string name="search_movies_title">Search</string>
-    <string name="search_hint">Find movies</string>
+    <string name="search_hint">Search movies</string>
     <string name="section_more">more</string>
     <string name="movie_detail_overview_title">Overview</string>
     <string name="movie_detail_about_title">About</string>
     <string name="movie_detail_genres_title">Genres</string>
     <string name="movie_detail_cast_title">Cast</string>
     <string name="movie_detail_countries_title">Countries</string>
-    <string name="button_remind_me_later">remind me later</string>
     <string name="start_fragment_title">MovieDatabase</string>
     <string name="popular_fragment_title">Popular</string>
     <string name="timePicker">Select time</string>
@@ -34,4 +33,6 @@
     <string name="alarm_dialog_date_title">Date</string>
     <string name="alarm_dialog_time_title">Time</string>
     <string name="notification_text_remind">You wanted to see this movie</string>
+    <string name="btn_remind_text">remind</string>
+    <string name="movie_detail_trailer_title">Trailer</string>
 </resources>

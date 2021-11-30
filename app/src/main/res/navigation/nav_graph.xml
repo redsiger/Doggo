@@ -7,6 +7,7 @@
 
     <include app:graph="@navigation/start_screen_graph"/>
     <include app:graph="@navigation/search_graph"/>
+    <include app:graph="@navigation/test_graph"/>
     <include app:graph="@navigation/alarms_graph"/>
 
 </navigation>

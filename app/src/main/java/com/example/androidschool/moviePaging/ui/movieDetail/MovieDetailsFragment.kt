@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.data.utils.TMDB_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailBinding
+import com.example.androidschool.moviePaging.databinding.FragmentMovieDetailsMotionBinding
 import com.example.androidschool.moviePaging.network.Credits.CastMember
 import com.example.androidschool.moviePaging.network.MovieById
 import com.example.androidschool.moviePaging.notifications.AlarmReceiver
@@ -41,9 +42,9 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
+class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_details_motion) {
 
-    private var _binding: FragmentMovieDetailBinding? = null
+    private var _binding: FragmentMovieDetailsMotionBinding? = null
     private val mBinding get() = _binding!!
     private val mViewModel: MovieDetailsViewModel by viewModels<MovieDetailsViewModel>()
     private val args by navArgs<MovieDetailsFragmentArgs>()
@@ -86,18 +87,20 @@ class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentMovieDetailBinding.bind(view)
+        _binding = FragmentMovieDetailsMotionBinding.bind(view)
 
-        mToolbar = mBinding.movieDetailsToolbar
-        mToolbar.setTitleTextAppearance(requireContext(), R.style.style_toolbar_title)
-        mBinding.movieDetailsToolbarCol.setCollapsedTitleTextAppearance(R.style.Theme_ToolBarFontFamily)
-        mBinding.movieDetailsToolbarCol.setExpandedTitleTextAppearance(R.style.Theme_ToolBarFontFamilyExpanded)
+        mToolbar = mBinding.movieDetailToolbar
+//        mToolbar.setTitleTextAppearance(requireContext(), R.style.style_toolbar_title)
+//        mBinding.movieDetailsToolbarCol.setCollapsedTitleTextAppearance(R.style.Theme_ToolBarFontFamily)
+//        mBinding.movieDetailsToolbarCol.setExpandedTitleTextAppearance(R.style.Theme_ToolBarFontFamilyExpanded)
+//        mBinding.movieDetailTitleExpanded.text = mMovieById.title
+//        mBinding.movieDetailTitle.text = mMovieById.title
         mNavController = findNavController()
         NavigationUI.setupWithNavController(mToolbar, mNavController)
 
 //        initMovieById()
         initObservers()
-        initRefresh()
+//        initRefresh()
         initNotificationDeleteClickListener()
         initCastSection()
         initTimePicker()
@@ -152,10 +155,11 @@ class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
             picker.show(childFragmentManager, "datePicker")
         }
 
-        mBinding.movieDetailFragmentButtonReminder.setOnClickListener(showPickerClickListener)
+        mBinding.movieDetailBtnRemind.setOnClickListener(showPickerClickListener)
     }
 
     private fun initShowTrailerClickListener(id: String) {
+
         val showTrailerClickListener = View.OnClickListener {
             val appSrc: String = "vnd.youtube:" + id
             val webSrc: String = "http://www.youtube.com/watch?v=" + id
@@ -169,7 +173,7 @@ class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
             }
         }
 
-        mBinding.movieDetailFragmentBackgroundImg.setOnClickListener(showTrailerClickListener)
+        mBinding.fragmentMovieDetailScrolling.movieDetailFragmentTrailerPlayback.setOnClickListener(showTrailerClickListener)
     }
 
     private fun initNotificationDeleteClickListener() {
@@ -184,22 +188,22 @@ class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
         movieStateObserver = Observer { state ->
             when (state) {
                 is Status.Success -> {
-                    hideLoading()
-                    showContent()
+//                    hideLoading()
+//                    showContent()
                     state.data.let {
                         mMovieById = it
                         renderPage(it, mGenres, mCountries)
                     }
                 }
                 is Status.InProgress -> {
-                    showLoading()
-                    hideContent()
+//                    showLoading()
+//                    hideContent()
                 }
                 is Status.Error -> {
                     val error = state.exception.toString()
                     Snackbar.make(mBinding.root, error, Snackbar.LENGTH_SHORT).show()
-                    hideLoading()
-                    hideContent()
+//                    hideLoading()
+//                    hideContent()
                 }
             }
         }
@@ -208,19 +212,19 @@ class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
         castStateObserver = Observer { state ->
             when (state) {
                 is Status.Success -> {
-                    hideLoading()
-                    showContent()
+//                    hideLoading()
+//                    showContent()
                     mCastAdapter.setList(state.data)
                 }
                 is Status.InProgress -> {
-                    showLoading()
-                    hideContent()
+//                    showLoading()
+//                    hideContent()
                 }
                 is Status.Error -> {
                     val error = state.exception.toString()
                     Snackbar.make(mBinding.root, error, Snackbar.LENGTH_SHORT).show()
-                    hideLoading()
-                    hideContent()
+//                    hideLoading()
+//                    hideContent()
                 }
             }
         }
@@ -249,7 +253,8 @@ class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
 //            movieDetailFragmentReleaseDate.text =
 //                if (movie.releaseDate.length > 4) movie.releaseDate.substring(0, 4)
 //                else movie.releaseDate
-            movieDetailsToolbarCol.title = movie.title
+            mBinding.movieDetailTitleExpanded.text = movie.title
+            mBinding.movieDetailTitle.text = movie.title
         }
 
         with(mBinding.fragmentMovieDetailScrolling) {
@@ -259,32 +264,39 @@ class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
             movieDetailFragmentRating.text = movie.voteAverage.toString()
             movieDetailFragmentRatingCount.text = getString(R.string.movie_detail_rating, movie.voteCount.toString())
 
-//            if (!movie.videos.results.isEmpty()) {
-//                initShowTrailerClickListener(movie.videos.results[0].key)
-//            } else {
-//                mBinding.movieDetailFragmentBackgroundPlayback.visibility = View.GONE
-//            }
+            if (!movie.videos.results.isEmpty()) {
+                initShowTrailerClickListener(movie.videos.results[0].key)
+                if (movie.backdropPath != "null") {
+                    mPicasso
+                        .load(TMDB_IMG_URL + movie.backdropPath)
+                        .centerCrop()
+                        .fit()
+                        .into(mBinding.fragmentMovieDetailScrolling.movieDetailFragmentTrailerPlayback)
+                }
+            } else {
+                movieDetailFragmentTrailerContainer.visibility = View.GONE
+            }
         }
     }
 
-    private fun hideLoading() {
-        mBinding.movieDetailFragmentProgressBar.visibility = View.GONE
-    }
-    private fun hideContent() {
-        mBinding.movieDetailsContentContainer.visibility = View.GONE
-    }
-    private fun showLoading() {
-        mBinding.movieDetailFragmentProgressBar.visibility = View.VISIBLE
-    }
-    private fun showContent() {
-        mBinding.movieDetailsContentContainer.visibility = View.VISIBLE
-    }
-    private fun showRefresh() {
-        mBinding.movieDetailFragmentRefreshContainer.isRefreshing = true
-    }
-    private fun hideRefresh() {
-        mBinding.movieDetailFragmentRefreshContainer.isRefreshing = false
-    }
+//    private fun hideLoading() {
+//        mBinding.movieDetailFragmentProgressBar.visibility = View.GONE
+//    }
+//    private fun hideContent() {
+//        mBinding.movieDetailsContentContainer.visibility = View.GONE
+//    }
+//    private fun showLoading() {
+//        mBinding.movieDetailFragmentProgressBar.visibility = View.VISIBLE
+//    }
+//    private fun showContent() {
+//        mBinding.movieDetailsContentContainer.visibility = View.VISIBLE
+//    }
+//    private fun showRefresh() {
+//        mBinding.movieDetailFragmentRefreshContainer.isRefreshing = true
+//    }
+//    private fun hideRefresh() {
+//        mBinding.movieDetailFragmentRefreshContainer.isRefreshing = false
+//    }
 
 
     private fun initCastSection() {
@@ -298,11 +310,11 @@ class MovieDetailsFragment(): Fragment(R.layout.fragment_movie_detail) {
         mBinding.fragmentMovieDetailScrolling.movieDetailFragmentCastRecycler.isNestedScrollingEnabled = false
     }
 
-    private fun initRefresh() {
-        mBinding.movieDetailFragmentRefreshContainer.setOnRefreshListener {
-            refreshFragment()
-        }
-    }
+//    private fun initRefresh() {
+//        mBinding.movieDetailFragmentRefreshContainer.setOnRefreshListener {
+//            refreshFragment()
+//        }
+//    }
 
     private fun refreshFragment() {
         mViewModel.getMovieById(movieId)

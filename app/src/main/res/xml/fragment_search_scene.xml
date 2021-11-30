@@ -4,17 +4,16 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
-        motion:constraintSetEnd="@+id/end"
-        motion:constraintSetStart="@id/start"
-        motion:duration="1000">
-       <KeyFrameSet>
-           <KeyAttribute
-               motion:motionTarget="@+id/imageView_search"
-               motion:framePosition="100"
-               android:scaleY="1" />
-       </KeyFrameSet>
+        motion:constraintSetEnd="@id/end"
+        motion:constraintSetStart="@id/start">
+        <KeyFrameSet>
+            <KeyAttribute
+                motion:motionTarget="@id/fragment_search_searchView"
+                motion:framePosition="100"
+                android:scaleY="1" />
+        </KeyFrameSet>
         <OnSwipe
-            motion:touchAnchorId="@+id/searchResultMovies" />
+            motion:touchAnchorId="@id/test_fragment_movies_refresh" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -22,9 +21,9 @@
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:id="@+id/imageView_search"
+            android:id="@id/imageView_search"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             motion:layout_constraintBottom_toBottomOf="@id/toolbar_search_fragment"/>
     </ConstraintSet>
 </MotionScene>

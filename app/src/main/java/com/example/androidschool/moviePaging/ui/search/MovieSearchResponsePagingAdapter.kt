@@ -12,9 +12,10 @@ import com.example.androidschool.moviePaging.R
 import com.example.androidschool.moviePaging.data.utils.TMDB_IMG_URL
 import com.example.androidschool.moviePaging.databinding.FragmentPopularRecyclerItemBinding
 import com.example.androidschool.moviePaging.model.Movie
+import com.example.androidschool.moviePaging.ui.popularMovies.PopularMoviesFragmentDirections
 import com.squareup.picasso.Picasso
 
-class MovieSearchResponsePagingAdapter(private val picasso: Picasso) : PagingDataAdapter<Movie, MovieSearchResponsePagingAdapter.MovieViewHolder>(
+class MovieSearchResponsePagingAdapter(private val picasso: Picasso): PagingDataAdapter<Movie, MovieSearchResponsePagingAdapter.MovieViewHolder>(
     MOVIE_COMPARATOR
 ) {
 
@@ -70,14 +71,16 @@ class MovieSearchResponsePagingAdapter(private val picasso: Picasso) : PagingDat
         getItem(position)?.let { holder.bind(movie = it) }
 
         val movie = getItem(position)
-        val bundle = Bundle()
-        val id = movie?.id.toString()
-        val movieTitle = movie?.title
-        bundle.putString("MovieId", id)
-        bundle.putString("MovieTitle", movieTitle)
+//        val bundle = Bundle()
+//        val id = movie?.id.toString()
+//        val movieTitle = movie?.title
+//        bundle.putString("MovieId", id)
+//        bundle.putString("MovieTitle", movieTitle)
 
         holder.itemView.setOnClickListener {
-            it.findNavController().navigate(R.id.movie_detail_graph, bundle)
+            val action = PopularMoviesFragmentDirections.actionPopularMoviesFragmentToMovieDetailsFragment(movie!!.id)
+//            it.findNavController().navigate(R.id.movie_detail_graph, bundle)
+            it.findNavController().navigate(action)
         }
     }
 

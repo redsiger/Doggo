@@ -13,7 +13,6 @@
     <string name="movie_detail_genres_title">Жанр</string>
     <string name="movie_detail_cast_title">Актерский состав</string>
     <string name="movie_detail_countries_title">Страны</string>
-    <string name="button_remind_me_later">напомнить позже</string>
     <string name="start_fragment_title">Фильмы</string>
     <string name="popular_fragment_title">Популярное</string>
     <string name="timePicker">Выберите время</string>
@@ -21,7 +20,7 @@
     <string name="movie_detail_rating" translatable="false">%1$s голосов</string>
     <string name="fragment_updated">Обновление…</string>
     <string name="reminder_is_set">Напоминание установлено на %1$s</string>
-    <string name="reminder_is_delete">%1$s. напоминание удалено</string>
+    <string name="reminder_is_delete">%1$s. Напоминание удалено</string>
     <string name="alarms_fragment_title">Будильники</string>
     <string name="main_fragment_title">Главная</string>
     <string name="top_rated_movies_title">Топ</string>
@@ -34,4 +33,6 @@
     <string name="alarm_dialog_time_title">Время</string>
     <string name="notification_text_remind">Вы хотели посмотреть этот фильм</string>
     <string name="top_rated_fragment_title">Топ</string>
+    <string name="btn_remind_text">напомнить</string>
+    <string name="movie_detail_trailer_title">Трейлер</string>
 </resources>

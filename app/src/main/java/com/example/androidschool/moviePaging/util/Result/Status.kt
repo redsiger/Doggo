@@ -2,6 +2,8 @@ package com.example.androidschool.moviePaging.util.Result
 
 import java.lang.Exception
 
+typealias Mapper<Input, Output> = (Input) -> Output
+
 sealed class Status<out T> {
     data class Success<out T>(val data: T): Status<T>()
     data class Error(val exception: Exception): Status<Nothing>()

@@ -29,11 +29,12 @@
         tools:layout="@layout/fragment_popular_movies">
         <action
             android:id="@+id/action_popularMoviesFragment_to_movieDetailsFragment"
-            app:destination="@id/movie_detail_graph"
-            app:enterAnim="@anim/slide_in_down"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out_down"/>
+            app:destination="@id/movie_detail_graph">
+            <argument
+                android:name="movieId"
+                app:argType="integer"
+                app:nullable="false"/>
+        </action>
     </fragment>
 
     <fragment

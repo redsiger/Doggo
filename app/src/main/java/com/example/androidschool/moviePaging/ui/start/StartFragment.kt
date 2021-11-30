@@ -1,9 +1,11 @@
 package com.example.androidschool.moviePaging.ui.start
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -32,9 +34,10 @@ class StartFragment : Fragment(R.layout.fragment_start) {
     private var _binding: FragmentStartBinding? = null
     private val mBinding get() = _binding!!
     private val mViewModel by viewModels<StartFragmentViewModel>()
+
+    lateinit var mTrendingAdapter: StartFragmentTrendingAdapter
     lateinit var mPopularsAdapter: StartFragmentPopularsAdapter
     lateinit var mTopRatedAdapter: StartFragmentPopularsAdapter
-    lateinit var mTrendingAdapter: StartFragmentTrendingAdapter
 
     lateinit var mTrendingStateObserver: Observer<Status<List<Movie>>>
     lateinit var mPopularStateObserver: Observer<Status<List<Movie>>>
@@ -42,16 +45,14 @@ class StartFragment : Fragment(R.layout.fragment_start) {
 
     lateinit var mNavController: NavController
     lateinit var mToolbar: Toolbar
-    lateinit var mBottomNavigationView: BottomNavigationView
 
     @Inject lateinit var mPicasso: Picasso
 
+    // Search
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_menu, menu)
 
         val searchItem = menu.findItem(R.id.app_bar_search)
         val searchView: SearchView = searchItem.actionView as SearchView
-//        searchView.maxWidth = Int.MAX_VALUE
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(searchQuery: String?): Boolean {
@@ -67,27 +68,56 @@ class StartFragment : Fragment(R.layout.fragment_start) {
         })
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.app_bar_search -> {
-
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.app_bar_search -> {
+//
+//            }
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentStartBinding.bind(view)
-        mToolbar = mBinding.mainToolbar
-        mToolbar.setTitleTextAppearance(requireContext(), R.style.style_toolbar_title)
-        mNavController = findNavController()
-        NavigationUI.setupWithNavController(mToolbar, mNavController)
-//        mBottomNavigationView = mBinding.bottomNav
-//        NavigationUI.setupWithNavController(mBottomNavigationView, mNavController)
-        setHasOptionsMenu(true)
+
+        initToolbar()
 
         initialization()
+    }
+
+    private fun initToolbar() {
+        mToolbar = mBinding.mainToolbar
+        mToolbar.setTitleTextAppearance(requireContext(), R.style.style_toolbar_title)
+        mToolbar.inflateMenu(R.menu.search_menu)
+        val searchItem = mToolbar.menu.findItem(R.id.app_bar_search)
+        val searchView = searchItem.actionView as SearchView
+        initSearchInToolbar(searchView)
+        initNavigationInToolbar()
+    }
+
+    private fun initNavigationInToolbar() {
+        mNavController = findNavController()
+        NavigationUI.setupWithNavController(mToolbar, mNavController)
+    }
+
+    private fun initSearchInToolbar(searchView: SearchView) {
+        with (searchView) {
+            queryHint = getString(R.string.search_hint)
+            setBackgroundResource(R.color.transparent)
+            setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(searchQuery: String?): Boolean {
+                    val bundle = Bundle()
+                    bundle.putString("searchQuery", searchQuery)
+                    findNavController().navigate(R.id.searchFragment, bundle)
+                    return true
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    return true
+                }
+            })
+        }
     }
 
     private fun initialization() {
@@ -196,6 +226,25 @@ class StartFragment : Fragment(R.layout.fragment_start) {
         }
 
         mViewModel.topRatedState.observe(viewLifecycleOwner, mTopRatedStateObserver)
+    }
+
+    private fun showTrending() {
+        mBinding.sectionTrendingContainer.visibility = View.VISIBLE
+    }
+    private fun showPopular() {
+        mBinding.sectionPopularContainer.visibility = View.VISIBLE
+    }
+    private fun showTopRated() {
+        mBinding.sectionTopRatedContainer.visibility = View.VISIBLE
+    }
+    private fun hideTrending() {
+        mBinding.sectionTrendingContainer.visibility = View.GONE
+    }
+    private fun hidePopular() {
+        mBinding.sectionPopularContainer.visibility = View.GONE
+    }
+    private fun hideTopRated() {
+        mBinding.sectionTopRatedContainer.visibility = View.GONE
     }
 
     private fun showData() {

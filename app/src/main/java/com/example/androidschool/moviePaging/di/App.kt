@@ -45,6 +45,4 @@ class App: Application() {
             manager.createNotificationChannel(channel1)
         }
     }
-
-
 }

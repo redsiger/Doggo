@@ -7,8 +7,8 @@
         android:title="@string/main_fragment_title"/>
 
     <item
-        android:icon="@drawable/ic_search_movies"
-        android:id="@+id/search_graph"
+        android:icon="@drawable/ic_section_more"
+        android:id="@+id/test_graph"
         android:title="@string/search_movies_title"/>
 
     <item

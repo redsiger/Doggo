@@ -2,7 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/app_padding_extraLarge"
+    android:paddingBottom="100dp"
     android:clipToPadding="false"
     android:id="@+id/fragment_movie_detail_scrolling"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,7 +28,6 @@
                 android:layout_marginEnd="@dimen/app_margin_extraLarge"
                 android:drawableStart="@drawable/ic_rating"
                 android:drawablePadding="@dimen/app_padding_small"
-                android:text="@string/movie_detail_rating"
                 tools:text="8.2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -134,7 +133,6 @@
 
             <com.example.androidschool.moviePaging.util.CustomViews.ExpandableTextView.ExpandableTextView
                 android:id="@+id/movie_detail_fragment_overview_body"
-                tools:text="some desc"
                 android:justificationMode="inter_word"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -148,12 +146,57 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movie_detail_fragment_trailer_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/app_margin_large"
+        android:paddingStart="@dimen/app_padding_extraLarge"
+        android:paddingEnd="@dimen/app_padding_extraLarge"
+        app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_overview_container">
+
+        <TextView
+            android:id="@+id/movie_detail_fragment_trailer_title"
+            style="@style/style_movie_detail_subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_detail_trailer_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="16:9"
+            android:layout_marginTop="@dimen/app_margin_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_trailer_title"
+            app:cardCornerRadius="@dimen/card_corner_radius">
+
+            <ImageView
+                android:id="@+id/movie_detail_fragment_trailer_playback"
+                tools:background="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/movie_detail_poster_background"/>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/movie_detail_fragment_cast_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/app_margin_large"
-            app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_overview_container">
+            app:layout_constraintTop_toBottomOf="@id/movie_detail_fragment_trailer_container">
 
             <TextView
                 android:id="@+id/movie_detail_fragment_cast_title"
